@@ -1,4 +1,12 @@
 # Seattle Collision Research Tool
+## Use Cases
+Key functionality: Enable users to view map of magnitude of collisions near new buildings in Seattle, before, during and after construction
+Use cases: 
+1. Set Date Range 
+2. Select Radius size 
+3. Toggle accident type (per/bike etc) 
+4. Toggle Permit Type 
+5. Zoom ?
 
 ## Use Case: Duration Views
 
@@ -34,4 +42,82 @@ Adjusted map view in jupyter notebook that represents the selected time windows.
    - Use updated before_ct, during_ct_normalized, and after_ct for map data views.
    - Allow user to re-adjust jupyter settings and repeat process with new inputs.
 
+
+
+
+#### Component Specification
+* **Name:** Toggle_permit_info
+* **What it does:** Changes which permits to plot by letting user specify selection criteria
+	Selection criteria could include: 
+		* **Category** (e.g., single family, multi-family, commercial or industrial)
+		* **Action Type** (e.g., new constructin, addition/alteration)
+		* **Value:** The value of work to be conducted
+		* **Status:** e.g., Permit issues, permit closed, certificate of occupancy authorized
+		* **Permit type:** Construction, site development
+* **Inputs:** 
+	* Map of permits and collision
+	* Field_selection (string)
+	* Value selection (string, float or int depending on field selected e.g., if user selects "permit type" as their selected field, the value selection is a string, if the user selected value as thier field the value selection would be an int)
+* **Outputs:** updated map based on field selection
+* **Pseudo code:**
+	* Field_selection = field selection identified in toggle
+	* Value_selection = value selection identified in toggle
+	* permits = read.csv(permit_data.csv)
+	* temp_permits = filter permits where "selected_feild" == field selection
+	* collision_count = CountCollisionsNearPermits(temp_permits, distance, collisions)
+	* DrawMap(with inputs TBD)
+	* PlotPermitSites(temp_permits, collision_count)
+	* return updated map
+
+
+#### Subcomponent 1: Draw map
+* **Name:** DrawMap
+* **What it does:** Draws a map of the specified region
+* **Inputs:** ? Lat/Lon (floats) Coordinates of areas to be drawn - this may change as we learn more about which technology we will use to draw implement map drawing. 
+* **Outputs:** Image showing map of specified region 
+* **Pseudo code**
+	* TBD depending on mapping package used
+
+
+#### Subcomponent 2: Count collisions near permits
+* **Name:** CountCollisionsNearPermits
+* **What it does:** Counts how many collisions happened before, during and after construction of each permit
+* **Inputs:** 
+	* temp_permits: array of data for permits including floats representing permit lat/Lon coordinates, date object representing construction dates, 
+	* distance: float, as radius from permit location to count collisions, 
+	* temp_collisions: and array of data on permits including collision date (date objects) array of lat/lon coordinates (floats)
+* **Outputs:** array of integers, representing number of collisions before, during and after construction for each permit
+* **Pseudo code :**
+    count_before = instantiate array of zeros to count collisions before construction
+    count_during = instantiate array of zeros to count collisions during construction
+    count_after = instantiate array of zeros to count collisions after construction
+    counter = 0 
+    
+    for row in temp_permits: 
+        Lat = row['Latitude']
+        Lon = row['Longitude']
+        dists = distance_formula( Lat, Lon, collisions['Latitude'], collisions['Longitude'])
+        
+        for j in range(0,len(dists)):
+            if dists[j] > distance:
+                continue
+            else:
+                if collisions_date[j] < row['Issue Date']:
+                    count_before[i] += 1 
+            elif (collision_date[j] > row['Issue Date']) and collision_date[j] < row['Final Date']:
+                 count_during[i] += 1 
+            elif collisions.incdate[j] > row['Final Date']:
+                    count_after[i] += 1 
+           
+        counter += 1
+    return count_before, count_during, count_after
+
+
+#### Subomponent 3: Plot permit/collision data on map
+* **Name:** PlotPermitSites
+* **What it does:** Plots permits on map
+* **Inputs:** Lat/Lon (floats) for permit loaction, number (int) of accidents of specified type
+* **Outputs:** Points plotted on map corresponding to location of coordinates and magnitude of accident volume
+* **Pseudo code:**
+	TBD depending on mapping software used
 
