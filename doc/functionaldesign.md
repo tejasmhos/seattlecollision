@@ -113,7 +113,7 @@ Adjusted map view in jupyter notebook that represents the selected time windows.
     return count_before, count_during, count_after
 
 
-#### Subomponent 3: Plot permit/collision data on map
+#### Subcomponent 3: Plot permit/collision data on map
 * **Name:** PlotPermitSites
 * **What it does:** Plots permits on map
 * **Inputs:** Lat/Lon (floats) for permit loaction, number (int) of accidents of specified type
@@ -121,3 +121,29 @@ Adjusted map view in jupyter notebook that represents the selected time windows.
 * **Pseudo code:**
 	TBD depending on mapping software used
 
+## Use Case: Select Radius Size
+
+#### Name: 
+select_radius_size
+
+#### What it does: 
+Allows users to set a radius value that is used to filter the data and display a subset of the crashes attributed to buildings. 
+
+#### Inputs:
+ - Radius value, that is specified by the user through a jupyter slider. There are three different values, small, medium and large.
+ - 3 databases, Collisions, Building and Radius. Collisions contains a set of collisions and attributes, buildings contains info on buildings permits and radius contains building ids, collision ids and radius (distance between buildings and collision occurrences).
+ 
+
+#### Outputs: 
+- Jupyter map that displays the collisions that are within the selected radius, for each collision - building pairs
+
+#### Pseudocode:
+- Read the radius size that is set by the user.
+  - The radius size is a string that specifies small, medium and large.
+  - This radius size is converted into a number that is passed on to the query.
+- Generate a query in SQL that performs a search on the Radius DB
+ - Take the returned size from the Jupyter slider.
+ - Pass this query back to the SQL backend.
+- Execute the query on the Radius DB, and collect the returned results. 
+ - Process the returned tuples and perform a computation that determines whether a point needs to be added or removed.
+- Perform an update of the map displays, so that they reflect   
