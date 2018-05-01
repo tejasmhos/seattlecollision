@@ -15,12 +15,12 @@ database structure, see [documentation file TBD]?
 ## Use Cases
 Key functionality: Enable users to view map of magnitude of collisions near new buildings in Seattle, before, during and after construction
 Use cases: 
-1. [Set Date Range](#use-case:-set-date-range) 
+1. [Set Date Range](#1-use-case-set-date-range) 
 2. Select Radius size 
 3. Toggle accident type (per/bike etc) 
-4. [Toggle Permit Type](#use-case:-toggle-permit-type) 
+4. [Toggle Permit Type](#4-use-case-toggle-permit-type) 
 
-## Use Case: Set Date Range
+## 1. Use Case: Set Date Range
 
 #### Name: 
 set_duration
@@ -57,7 +57,7 @@ Adjusted map view in jupyter notebook that represents the selected time windows.
 
 
 
-## Use Case: Toggle Permit Type
+## 4. Use Case: Toggle Permit Type
 * **Name:** Toggle_permit_info
 * **What it does:** Changes which permits to plot by letting user specify selection criteria
 	Selection criteria could include: 
