@@ -12,6 +12,11 @@ python package, and the processed data will be divided into 3 tables: Building.d
 Collision.db, and Radius.db. For full details on the data sources and processed 
 database structure, see [documentation file TBD]. 
 
+## Targeted user
+**Urban planner:** An urban planner could use this tool to visulaize the impact of construction and increased density on the rate traffic collisions. This could be used to identify potential problem areas that result from construction (e.g., pedestrian collisions tend to increase during construction, or parked car collisions tend to increase after construction). These insights could inform urban planning decisions for future building sites. We assume the urban planner is familiar with these data sets and the definitions of fields. He or she may not be familiar with python programming so we will seek to enable all required user interactions to be entered via a GUI. The use cases we provide will allow the urban planner to explore a variety of scenarios to identify where issues are currently occuring.
+
+**Community activist:** Community activitst may seek to ensure certain safety standards are maintained during this period of rapid growth in Seattle. This tool will allow activitists to identify areas where safety may be compromised during growth so they may lobby for policy improvements, with facts to support their efforts. They may be less familiar with the data set than the urban planners. They will also desire to use GUI for all user inputs. 
+
 ## Use Cases
 Key functionality: Enable users to view map of magnitude of collisions near new buildings in Seattle, before, during and after construction
 Use cases: 
@@ -31,102 +36,46 @@ Use cases:
    - Radius.db that has collision and building pairs within pre-determined radius of construction site by date, as well as start and end dates for each building construction
 * **Outputs:** Adjusted map view in jupyter notebook that represents the selected time windows.
 * **Pseudo code:**
-   - Set constr_start and constr_end from jupyter input slider.
-   - Calculate constr_dur, the duration of the construction task to be normalized.
-   - Set before_start date as the constr_start minus the data_dur selected in the jupyter radio button.
-   - Set after_end date as the constr_end plus the data_dur selected in the jupyter radio button.
-   - Query all construction sites from the derived construction database that were started and completed within the (constr_start, constr_end) time frame. Set sites to display_sites.
-   - Query the collision counts in the pre-defined radius for each site in display_sites in the following time frames:
-     - before_ct: (before_start, constr_start)
-     - during_ct: (constr_start, constr_end)
-     - after_ct: (constr_end, after_end)
-   - Normalize the during_ct so it reflects the same time period as before and after: 
-     - during_ct_normalized = during_ct * constr_dur / data_dur
+   - Set constr\_start and constr_end from jupyter input slider.
+   - Calculate constr\_dur, the duration of the construction task to be normalized.
+   - Set before\_start date as the constr\_start minus the data\_dur selected in the jupyter radio button.
+   - Set after\_end date as the constr\_end plus the data\_dur selected in the jupyter radio button.
+   - Query all construction sites from the derived construction database that were started and completed within the (constr\_start, constr\_end) time frame. Set sites to display\_sites.
+   - Query the collision counts in the pre-defined radius for each site in display\_sites in the following time frames:
+     - before\_ct: (before\_start, constr\_start)
+     - during\_ct: (constr\_start, constr\_end)
+     - after\_ct: (constr\_end, after\_end)
+   - Normalize the during\_ct so it reflects the same time period as before and after: 
+     - during\_ct_normalized = during\_ct * constr_dur / data\_dur
    - Update map display:
-     - Display only construction sites in display_sites.
-     - Use updated before_ct, during_ct_normalized, and after_ct for map data views.
+     - Display only construction sites in display\_sites.
+     - Use updated before\_ct, during\_ct\_normalized, and after\_ct for map data views.
      - Allow user to re-adjust jupyter settings and repeat process with new inputs.
 
 
 ## 2. Use Case: Toggle Permit Type
-* **Name:** Toggle_permit_info
+
 * **What it does:** Changes which permits to plot by letting user specify selection criteria
 	Selection criteria could include: 
 		* **Category** (e.g., single family, multi-family, commercial or industrial)
-		* **Action Type** (e.g., new constructin, addition/alteration)
 		* **Value:** The value of work to be conducted
-		* **Status:** e.g., Permit issues, permit closed, certificate of occupancy authorized
-		* **Permit type:** Construction, site development
 * **Inputs:** 
 	* Map of permits and collision
-	* Field_selection (string)
-	* Value selection (string, float or int depending on field selected e.g., if user selects "permit type" as their selected field, the value selection is a string, if the user selected value as thier field the value selection would be an int)
-* **Outputs:** updated map based on field selection
+	* Field\_selection (string) Select which field you want to filter, by moving a value\_selection toggle or slider
+	* Value_selection (string, float or int depending on field selected e.g., if user selects "category" as their selected field, the value selection is a string, if the user selected value as thier field the value selection would be an int). Value selection comes from interactive Jupyter radio buttons (category) or slider (value)
+* **Outputs:** Updated map that includes permits selected by inputs, and associated collision data (based on selected radius)
 * **Pseudo code:**
-	* Field_selection = field selection identified in toggle
-	* Value_selection = value selection identified in toggle
-	* permits = read.csv(permit_data.csv)
-	* temp_permits = filter permits where "selected_feild" == field selection
-	* collision_count = CountCollisionsNearPermits(temp_permits, distance, collisions)
-	* DrawMap(with inputs TBD)
-	* PlotPermitSites(temp_permits, collision_count)
-	* return updated map
+	* Field\_selection = field selection identified in toggle
+	* Value\_selection = value selection identified in toggle
+	* Using pandas filter the permit data base based on field\_selection and value_selection 
+  * Take the resulting permit ID column as a vector and filter the Radius database based on those permit IDs
+  * Feed new data into map for automatic update
+  * Return updated map
 
-
-#### Subcomponent 1: Draw map
-* **Name:** DrawMap
-* **What it does:** Draws a map of the specified region
-* **Inputs:** ? Lat/Lon (floats) Coordinates of areas to be drawn - this may change as we learn more about which technology we will use to draw implement map drawing. 
-* **Outputs:** Image showing map of specified region 
-* **Pseudo code**
-	* TBD depending on mapping package used
-
-
-#### Subcomponent 2: Count collisions near permits
-* **Name:** CountCollisionsNearPermits
-* **What it does:** Counts how many collisions happened before, during and after construction of each permit
-* **Inputs:** 
-	* temp_permits: array of data for permits including floats representing permit lat/Lon coordinates, date object representing construction dates, 
-	* distance: float, as radius from permit location to count collisions, 
-	* temp_collisions: and array of data on permits including collision date (date objects) array of lat/lon coordinates (floats)
-* **Outputs:** array of integers, representing number of collisions before, during and after construction for each permit
-* **Pseudo code :**
-    count_before = instantiate array of zeros to count collisions before construction
-    count_during = instantiate array of zeros to count collisions during construction
-    count_after = instantiate array of zeros to count collisions after construction
-    counter = 0 
-    
-    for row in temp_permits: 
-        Lat = row['Latitude']
-        Lon = row['Longitude']
-        dists = distance_formula( Lat, Lon, collisions['Latitude'], collisions['Longitude'])
-        
-        for j in range(0,len(dists)):
-            if dists[j] > distance:
-                continue
-            else:
-                if collisions_date[j] < row['Issue Date']:
-                    count_before[i] += 1 
-            elif (collision_date[j] > row['Issue Date']) and collision_date[j] < row['Final Date']:
-                 count_during[i] += 1 
-            elif collisions.incdate[j] > row['Final Date']:
-                    count_after[i] += 1 
-           
-        counter += 1
-    return count_before, count_during, count_after
-
-
-#### Subcomponent 3: Plot permit/collision data on map
-* **Name:** PlotPermitSites
-* **What it does:** Plots permits on map
-* **Inputs:** Lat/Lon (floats) for permit loaction, number (int) of accidents of specified type
-* **Outputs:** Points plotted on map corresponding to location of coordinates and magnitude of accident volume
-* **Pseudo code:**
-	TBD depending on mapping software used
 
 ## 3. Use Case: Select Radius Size
 * **Name:** select_radius_size
-* **What it does:** Allows users to set a radius value that is used to filter the data and display a subset of the crashes attributed to buildings. 
+* **What it does:** Allows users to set a radius value that is used to filter the data and display a subset of the crashes within the selected radius of a building. 
 * **Inputs:**
    - Radius value, that is specified by the user through a jupyter slider. There are three different values, small, medium and large.
    - 3 databases, Collisions, Building and Radius. Collisions contains a set of collisions and attributes, buildings contains info on buildings permits and radius contains building ids, collision ids and radius (distance between buildings and collision occurrences).
