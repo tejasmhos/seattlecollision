@@ -63,7 +63,8 @@ Use cases:
 	* Map of permits and collision
 	* Field\_selection (string) Select which field you want to filter, by moving a value\_selection toggle or slider
 	* Value_selection (string, float or int depending on field selected e.g., if user selects "category" as their selected field, the value selection is a string, if the user selected value as thier field the value selection would be an int). Value selection comes from interactive Jupyter radio buttons (category) or slider (value)
-* **Outputs:** Updated map that includes permits selected by inputs, and associated collision data (based on selected radius)
+* **Outputs:** 
+  * Updated map that includes permits selected by inputs, and associated collision data (based on selected radius)
 * **Pseudo code:**
 	* Field\_selection = field selection identified in toggle
 	* Value\_selection = value selection identified in toggle
