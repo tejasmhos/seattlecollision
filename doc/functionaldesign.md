@@ -146,4 +146,46 @@ Allows users to set a radius value that is used to filter the data and display a
  - Pass this query back to the SQL backend.
 - Execute the query on the Radius DB, and collect the returned results. 
  - Process the returned tuples and perform a computation that determines whether a point needs to be added or removed.
-- Perform an update of the map displays, so that they reflect   
+- Perform an update of the map displays, so that they reflect
+
+## Use Case: Accident Severity
+
+#### Name: 
+accident_severity
+
+#### What it does: 
+Allows user to adjust map view by filtering based on the severity of the accident that occurred around where building permits are issued. The user will then be able to compare the severity of accidents within the proximity of building permits before, during, and after construction.  The severity classifications included in the Collisions dataset are Property Damage, Injury, Serious Injury, Fatality or Unknown.
+
+#### Inputs:
+-The user inputs the accident severity level they are interested in comparing. This could include one, all, or a subset of the accident severity codes associated with each collision.
+-The selected accident severity is used to filter the collisions database. The collision IDs are then fed into the Radius database that associates collisions with certain building permits.
+
+#### Outputs: 
+-The map displayed within Jupyter notebook updates according to the number of accidents associated with the selected severity code. 
+
+#### Pseudo code:
+-Receive accident severity input levels selected by user via the interactive feature on the map
+-Using pandas, filter the Collisions database with the severity code column based on the user input. 
+-Take the resulting Collision ID column as a vector and filter the Radius database based on those collision IDs
+-Feed new data into map for automatic update.
+
+## Use Case: Accident Type
+
+#### Name: 
+accident_type
+
+#### What it does: 
+Allows user to adjust map view by filtering based on the type of accident that occurred around where building permits are issued. The user will then be able to compare the type of accidents within the proximity of building permits before, during, and after construction.  The classifications included whether the accident involved pedestrians, cyclists, or vehicle only. 
+
+#### Inputs:
+-The user inputs the accident type they are interested in comparing. This could include one, all, or a subset of the accident types that are used to classify each collision.
+-The selected accident type is used to filter the collisions database. The collision IDs are then fed into the Radius database that associates collisions with certain building permits.
+
+#### Outputs: 
+-The map displayed within Jupyter notebook updates according to the number of accidents associated with the selected accident type
+
+#### Pseudo code:
+-Receive accident type selected by user via the interactive feature on the map[
+-Using pandas, filter the Collisions database with the accident type column based on the user input. 
+-Take the resulting Collision ID column as a vector and filter the Radius database based on those collision IDs
+-Feed new data into map for automatic update.
