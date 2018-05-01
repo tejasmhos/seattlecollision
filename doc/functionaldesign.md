@@ -1,14 +1,26 @@
 # Seattle Collision Research Tool
+
+## Pre-dependencies
+The user will interact with a jupyter notebook that displays greater Seattle maps 
+with default construction and collision data visualized. In each of our use cases, 
+jupyter interact widgets will allow the user to interact with our settings and 
+update the map views. Maps will each have before, during, and after construction 
+views of collision density at each new building site under the default (or selected) parameters.
+
+The underlying databases required to update our maps will be created in our 
+python package, and the processed data will be divided into 3 tables: Building.db, 
+Collision.db, and Radius.db. For full details on the data sources and processed 
+database structure, see [documentation file TBD]? 
+
 ## Use Cases
 Key functionality: Enable users to view map of magnitude of collisions near new buildings in Seattle, before, during and after construction
 Use cases: 
-1. Set Date Range 
+1. [Set Date Range](#use-case:-set-date-range) 
 2. Select Radius size 
 3. Toggle accident type (per/bike etc) 
-4. Toggle Permit Type 
-5. Zoom ?
+4. [Toggle Permit Type](#use-case:-toggle-permit-type) 
 
-## Use Case: Duration Views
+## Use Case: Set Date Range
 
 #### Name: 
 set_duration
@@ -19,8 +31,8 @@ Allows user to adjust map view by setting construction window and duration range
 #### Inputs:
  - jupyter map view of before, during, and after construction with default duration settings
  - constr_start and constr_end from jupyter interactive slider
- - collision_duration in months from jupyter interactive radio buttons (3, 6, 9, 12 months)
- - database derived from building permit and collision data that has collision counts within pre-determined radius of construction site by date, as well as start and end dates for all building construction
+ - data_dur from jupyter interactive slider, the duration of collision data to be taken before and after construction 
+ - Radius.db that has collision and building pairs within pre-determined radius of construction site by date, as well as start and end dates for each building construction
 
 #### Outputs: 
 Adjusted map view in jupyter notebook that represents the selected time windows.
@@ -28,15 +40,15 @@ Adjusted map view in jupyter notebook that represents the selected time windows.
 #### Pseudo code:
  - Set constr_start and constr_end from jupyter input slider.
  - Calculate constr_dur, the duration of the construction task to be normalized.
- - Set before_start date as the constr_start minus the collision_duration selected in the jupyter radio button.
- - Set after_end date as the constr_end plus the collision_duration selected in the jupyter radio button.
+ - Set before_start date as the constr_start minus the data_dur selected in the jupyter radio button.
+ - Set after_end date as the constr_end plus the data_dur selected in the jupyter radio button.
  - Query all construction sites from the derived construction database that were started and completed within the (constr_start, constr_end) time frame. Set sites to display_sites.
  - Query the collision counts in the pre-defined radius for each site in display_sites in the following time frames:
    - before_ct: (before_start, constr_start)
    - during_ct: (constr_start, constr_end)
    - after_ct: (constr_end, after_end)
  - Normalize the during_ct so it reflects the same time period as before and after: 
-   - during_ct_normalized = during_ct * constr_dur / collision_duration
+   - during_ct_normalized = during_ct * constr_dur / data_dur
  - Update map display:
    - Display only construction sites in display_sites.
    - Use updated before_ct, during_ct_normalized, and after_ct for map data views.
@@ -45,7 +57,7 @@ Adjusted map view in jupyter notebook that represents the selected time windows.
 
 
 
-#### Component Specification
+## Use Case: Toggle Permit Type
 * **Name:** Toggle_permit_info
 * **What it does:** Changes which permits to plot by letting user specify selection criteria
 	Selection criteria could include: 
