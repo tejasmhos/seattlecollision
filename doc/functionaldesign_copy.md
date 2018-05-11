@@ -9,7 +9,7 @@ views of collision density at each new building site under the default (or selec
 
 The underlying databases required to update our maps will be created in our 
 python package, and the processed data will be divided into 3 tables: Building, 
-Collision and Radius. The Building
+Collision and Radius. The Building table contains information about the dates of construction, the type and permit number as a key. The Collisions table contains information about specific collisions, such as the date location and severity. Finally the Radius table contains the building id, collision id and a radius value. This table is important to select buildings given a radius size.
 
 ## Targeted user
 **Urban planner:** An urban planner could use this tool to visulaize the impact of construction and increased density on the rate traffic collisions. This could be used to identify potential problem areas that result from construction (e.g., pedestrian collisions tend to increase during construction, or parked car collisions tend to increase after construction). These insights could inform urban planning decisions for future building sites. We assume the urban planner is familiar with these data sets and the definitions of fields. He or she may not be familiar with python programming so we will seek to enable all required user interactions to be entered via a GUI. The use cases we provide will allow the urban planner to explore a variety of scenarios to identify where issues are currently occuring.
