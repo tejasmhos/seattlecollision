@@ -81,26 +81,44 @@ Use cases:
 
 The components that we will be using for the project are listed below:
 
+
+
 ## Draw_markers
 
-- This component is used to place markers on the map that correspond to collision occurrences.
-- The inputs to this component are a set of latitudes and longitudes, while the output is a circle marker that is plotted on the map.
+- **Name:**Draw_markers
+- **What it does:** component is used to place markers on the map that correspond to collision occurrences.
+- **Inputs:**
+  - Latitude (float): The latitude value for the given point.
+  - Longitude (float): The longitude value for the given point.
+- **Outputs:** The code to plot the point on the map.
+
+
 
 ## Build_query
 
-- This component is used to construct SQL queries that help subset our dataset.
-- It accepts as input the input that the users specify using the sliders. It then constructs the appropriate SQL query, queries our SQLite-based database, and returns a subset of our data. This is then used by our Draw_markers component to plot markers on the map.
+- **Name:** Build_query
+- **What it does:** It builds or constructs the SQL query based on the selectors from the sliders.
+- **Inputs:** The values from the sliders (integer and float based.)
+- **Outputs:** A SQL query that is sent to SQLite for processing
+
+
 
 ## Build_ui
 
-- This component is used to construct our maps that we use to visualize our data.
-- Three maps are constructed by our component, one for each time period corresponding to before construction, during construction and after construction. The layout of these maps, along with the interaction widgets are all constructed by this component.
+- **Name:** Build_ui
+- **What it does:**This component is used to construct our maps that we use to visualize our data.
+- **Inputs:** Dates, in the form of a string.
+- **Outputs:**Three maps are constructed by our component, one for each time period corresponding to before construction, during construction and after construction. The layout of these maps, along with the interaction widgets are all constructed by this component.
 
 ## Build_date_query
 
-- The construction of the query that handles time periods (the before, during and after) is performed by this component.
+- **Name:** Build_date_query
 
-- We develop a separate component to perform this function as it is quite complex. It also constructs queries that help us divide time into three periods.
+- **What it Does:** The construction of the query that handles time periods (the before, during and after) is performed by this component.
+
+- **Inputs:** A date, that is in the form of a string.
+
+- **Outputs:** Three different periods, before, during and after, in the form of dates.
 
   
 
