@@ -85,7 +85,7 @@ The components that we will be using for the project are listed below:
 
 ## Draw_markers
 
-- **Name:**Draw_markers
+- **Name:** Draw_markers
 - **What it does:** component is used to place markers on the map that correspond to collision occurrences.
 - **Inputs:**
   - Latitude (float): The latitude value for the given point.
@@ -106,9 +106,9 @@ The components that we will be using for the project are listed below:
 ## Build_ui
 
 - **Name:** Build_ui
-- **What it does:**This component is used to construct our maps that we use to visualize our data.
+- **What it does:** This component is used to construct our maps that we use to visualize our data.
 - **Inputs:** Dates, in the form of a string.
-- **Outputs:**Three maps are constructed by our component, one for each time period corresponding to before construction, during construction and after construction. The layout of these maps, along with the interaction widgets are all constructed by this component.
+- **Outputs:** Three maps are constructed by our component, one for each time period corresponding to before construction, during construction and after construction. The layout of these maps, along with the interaction widgets are all constructed by this component.
 
 ## Build_date_query
 
