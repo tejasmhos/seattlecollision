@@ -82,37 +82,46 @@ Use cases:
 The components that we will be using for the project are listed below:
 
 
+## draw_markers
 
-## Draw_markers
+- **Name:** draw_markera
 
-- **Name:** Draw_markers
 - **What it does:** component is used to place markers on the map that correspond to collision occurrences.
+
 - **Inputs:**
-  - Latitude (float): The latitude value for the given point.
-  - Longitude (float): The longitude value for the given point.
-- **Outputs:** The code to plot the point on the map.
+  - Data table used to construct maps which incudes the following fields:
+      - Latitude (float): The latitude value for the given point.
+      - Longitude (float): The longitude value for the given point.
+      - Collision Count (Integer): Number of collisions within selected radius of building site.
+- **Outputs:** A map object with building permits plotted on it, with magnitude of collisions codified by size or color.
+
+- **How it interacts with other components:** Recieves data table created in the "build\_query" component. Sends map output to build\_ui component
 
 
+## build_query
 
-## Build_query
+- **Name:** build_query
+- **What it does:** It filters a table using an SQL query based on the selectors from the sliders or radio buttons.
 
-- **Name:** Build_query
-- **What it does:** It builds or constructs the SQL query based on the selectors from the sliders.
-- **Inputs:** The values from the sliders (integer and float based.)
-- **Outputs:** A SQL query that is sent to SQLite for processing
+- **Inputs:** The values from the sliders (integer and float based.), a table including Lat/Lon, building type, radius size, collision type, date
 
+- **Outputs:**  A table with the same fields as input table, but filtered with the required specifications as selected with sliders/radio buttons
 
+- **How it interacts with other components:** The table created in the build\_query function is used as input in the draw_markers component. Also, the options selected in build\_query are based on the options created in the build\_ui component. 
 
-## Build_ui
+## build_ui
+- **Name:** build_ui
+- **What it does:** This component is used to construct our user interface that we use to visualize our data, including building interactivity, as well as placing output maps in a side by side orientation.
 
-- **Name:** Build_ui
-- **What it does:** This component is used to construct our maps that we use to visualize our data.
-- **Inputs:** Dates, in the form of a string.
+- **Inputs:** Interactivity options selected by developers for interactivity element, and map objects created in draw_markers component for the map drawing component.
+
 - **Outputs:** Three maps are constructed by our component, one for each time period corresponding to before construction, during construction and after construction. The layout of these maps, along with the interaction widgets are all constructed by this component.
 
-## Build_date_query
+- **How it interacts with other components:** This components has two parts, one that collects user input and one that draws output for the user to see. The UI built by this component is used to create inputs in the build\_query component; the maps drawn by this component are created in the draw\_markers component. 
 
-- **Name:** Build_date_query
+## build\_date\_query
+
+- **Name:** build\_date\_query
 
 - **What it Does:** The construction of the query that handles time periods (the before, during and after) is performed by this component.
 
