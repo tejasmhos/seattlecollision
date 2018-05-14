@@ -2,6 +2,8 @@
 """
 This module includes the functions used to clean the collisions and building permit datasets.
 the function will take the raw files and then produce a csv of the cleaned data
+
+
 """
 
 import os
@@ -43,7 +45,8 @@ def collision_clean(file_path):
                                           "severitydesc" : "c_severity_desc"})
   collisions['c_veh'] = np.where(collisions['c_cyc'] == 0,
                                  np.where(collisions['c_ped'] == 0, 1, 0), 0)
-  collisions.to_csv('collisions_clean.csv')
+  collisions = collisions[collisions["c_severity_desc"] != "Unknown"]
+  collisions.to_csv('processed_collisions_outfile.csv')
   return collisions
 
 """
@@ -73,6 +76,7 @@ def buildings_clean(file_path):
     buildings = buildings[pd.notnull(buildings["Final Date"]) |
                           pd.notnull(buildings["Expiration Date"])]
     buildings = buildings[buildings["Status"] != "CANCELLED"]
+    buildings = buildings[buildings["Category"]=="COMMERCIAL"]
     buildings = buildings.rename(columns={"Application/Permit Number": "b_id",
                                           "Permit Type": "b_permit_type",
                                           "Category" : "b_category",
@@ -83,11 +87,11 @@ def buildings_clean(file_path):
                                           "Final Date" : "b_final_date",
                                           "Expiration Date" : "b_expiration_date",
                                           "Status" : "b_status",
-                                          "Latitude" : "b_latitude",
-                                          "Longitude" : "b_longitude"})
-    buildings.to_csv('buildings_clean.csv')
+                                          "Latitude" : "b_lat",
+                                          "Longitude" : "b_long"})
+    buildings.to_csv('processed_buildings_outfile.csv')
     return buildings
 
 
 collision_clean("Collisions.csv")
-buildings_clean('clean_permits.csv')
+buildings_clean("clean_permits.csv")
