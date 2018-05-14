@@ -9,7 +9,7 @@ test_rows, and test_file path.
 
 
 import unittest
-from data_clean import collision_clean
+from data_clean import collisions_clean
 from data_clean import buildings_clean
 
 class TestDataClean(unittest.TestCase):
@@ -34,7 +34,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the correct exception is raised.
         """
-        self.assertRaises(ValueError, collision_clean, "not_a_file_path")
+        self.assertRaises(ValueError, collisions_clean, "not_a_file_path")
 
     def test_buildings_file_path(self):
         """
@@ -57,7 +57,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_collision_output = collision_clean("Collisions.csv")
+        processed_collision_output = collisions_clean("raw_collisions_input.csv")
         processed_collision_output_dup =  processed_collision_output.drop_duplicates(["c_id"])
         self.assertTrue(processed_collision_output.shape[0] ==  processed_collision_output_dup.shape[0])
 
@@ -70,7 +70,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_buildings_output = buildings_clean("clean_permits.csv")
+        processed_buildings_output = buildings_clean("raw_buildings_input.csv")
         processed_buildings_output_dup =  processed_buildings_output.drop_duplicates(["b_id"])
         self.assertTrue(processed_buildings_output.shape[0] ==  processed_buildings_output_dup.shape[0])
     
@@ -84,7 +84,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_collision_output = collision_clean("Collisions.csv")
+        processed_collision_output = collisions_clean("raw_collisions_input.csv")
         self.assertTrue(processed_collision_output.shape[0] >= 10)
 
     def test_buildings_rows(self):
@@ -96,7 +96,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_buildings_output = buildings_clean("clean_permits.csv")
+        processed_buildings_output = buildings_clean("raw_buildings_input.csv")
         self.assertTrue(processed_buildings_output.shape[0] >= 10)
 
 if __name__ == '__main__':

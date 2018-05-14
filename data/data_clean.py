@@ -10,7 +10,7 @@ import os
 import pandas as pd
 import numpy as np
 
-def collision_clean(file_path):
+def collisions_clean(file_path):
   """
   Filters and removes unneeded observations from the collisions dataset
 
@@ -82,41 +82,33 @@ def buildings_clean(file_path):
   """
   if not os.path.exists(file_path):
         raise ValueError('The file path is not valid')
-  buildings = pd.read_csv(file_path, sep=',', header=0, index_col=0)
+  buildings = pd.read_csv(file_path, sep=',',header=0, index_col = 0)
   buildings = buildings[["Application/Permit Number",
-                         "Permit Type",
-                         "Category",
-                         "Action Type",
-                         "Work Type",
-                         "Value",
-                         "Issue Date",
-                         "Final Date",
-                         "Expiration Date",
-                         "Status",
-                         "Latitude",
-                         "Longitude"]]
-  buildings = buildings[buildings["Action Type"] == "NEW"]
-  buildings = buildings[buildings["Value"] > 500000]
+                       "Category", 
+                       "Action Type",
+                       "Value",
+                       "Issue Date",
+                       "Final Date",
+                       "Status",
+                       "Latitude",
+                       "Longitude"]]
+  buildings = buildings[buildings["Action Type"]=="NEW"]
+  buildings = buildings[buildings["Value"] > 1000000]
   buildings = buildings[pd.notnull(buildings["Issue Date"])]
-  buildings = buildings[pd.notnull(buildings["Final Date"]) |
-                        pd.notnull(buildings["Expiration Date"])]
+  buildings = buildings[pd.notnull(buildings["Final Date"])]
   buildings = buildings[buildings["Status"] != "CANCELLED"]
-  buildings = buildings[buildings["Category"]=="COMMERCIAL"]
-  buildings = buildings.rename(columns={"Application/Permit Number": "b_id",
-                                        "Permit Type": "b_permit_type",
-                                        "Category" : "b_category",
-                                        "Action Type" : "b_action_type",
-                                        "Work Type" : "b_work_type",
+  buildings = buildings.rename(columns={"Application/Permit Number": "b_id", 
+                                        "Category" : "b_category", 
                                         "Value": "b_value",
                                         "Issue Date" : "b_issue_date",
                                         "Final Date" : "b_final_date",
-                                        "Expiration Date" : "b_expiration_date",
-                                        "Status" : "b_status",
-                                        "Latitude" : "b_lat",
-                                        "Longitude" : "b_long"})
+                                     "Status" : "b_status",
+                                     "Latitude" : "b_lat",
+                                      "Longitude" : "b_long" })
+  buildings.drop("Action Type", axis=1,inplace=True)
   buildings.to_csv('processed_buildings_outfile.csv')
   return buildings
 
 
-collision_clean("Collisions.csv")
-buildings_clean("clean_permits.csv")
+collisions_clean("raw_collisions_input.csv")
+buildings_clean("raw_buildings_input.csv")
