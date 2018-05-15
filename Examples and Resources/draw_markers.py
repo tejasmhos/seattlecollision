@@ -3,7 +3,7 @@ Draws map of Seattle and plots collisions near new buildings.
 
 This moddule's purpose is to draws a map of Seattle and plots points to show
 the volume of collisions near new buildings. It plots three maps side by
-side, one with the number of collions before buildings were constructed,
+side, one showing the number of collions before buildings were constructed,
 another shows collisions that occured during construction and a third shows
 collisions after construction ended.
 
@@ -26,8 +26,6 @@ This module raises the following exceptions:
 
     KeyError: If a string other than "before", "during", or "after" is
     passed as the second argument to create_map then a KeyError is raised.
-
-
 """
 
 import branca
@@ -39,7 +37,7 @@ def create_map(data, period):
     Creates a map and plots new buildings (location) and collisions (marker size)
 
     Args:
-    data: a data frame that contains the following fields:
+    data: a dataframe that contains the following fields:
         b_id (int): buiding id number (key)
         b_latitude (float): latitude of building
         b_longitude (float): longitude of building
@@ -68,8 +66,20 @@ def create_map(data, period):
         passed as the second argument to create_map then a KeyError is
         raised.
 
+        ValueError: If input data is too big it is difficult to render in
+        jupyter. If this happens, a ValueError is raised.
+
     """
+
+    true_set = set(['b_latitude', 'col_after', 'col_before', 'b_id', 'b_longitude', 'col_during'])
+    if not set(list(data)) == true_set:
+        raise IndexError("Data set does not contain correct fields")
+
+    if data.shape[0] > 800:
+        raise TypeError("Please select 800 or fewer observations from dataframe.")
+
     location = [np.mean(data['b_latitude']), np.mean(data['b_longitude'])]
+
     my_map = folium.Map(location=location, zoom_start=11)
 
     for index, row in data.iterrows(): #pylint: disable=unused-variable
@@ -80,7 +90,38 @@ def create_map(data, period):
             fill_color='#132b5e').add_to(my_map)
     return my_map
 
+
 def place_maps(data):
+    """
+    Draws three maps, plotting buiding permit locations with size
+    representing number of collisions. Maps included show collisions,
+    before, during and after building construction.
+
+    Args:
+    data: a dataframe that contains the following fields:
+        b_id (int): buiding id number (key)
+        b_latitude (float): latitude of building
+        b_longitude (float): longitude of building
+        col_before (int): Number of collisions that happend in period prior
+        to construction
+        col_duirng (int): Number of collisions that happend in period during
+        construction
+        col_after (int): Number of collisions that happend in period after
+        construction.
+
+    Returns:
+        Three map images, with building permit locations identified. Maps
+        each show building locations (location of dot), and number of
+        collisions (size of dot). The three maps shown include collisions
+        before construction (left), during construction (middle) and after
+        construction (right).
+
+    Raises
+        IndexError: If a dataframe is passed to the create_map function or
+        the place_maps function that does not contain the correct fields, an
+        Index Error is raised.
+    """
+
     map_grid = branca.element.Figure()
 
     map_1 = create_map(data, "before")
