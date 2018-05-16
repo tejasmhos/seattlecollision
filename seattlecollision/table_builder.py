@@ -29,8 +29,6 @@ def create_table(database, path):
     if not os.path.exists(path):
         raise ValueError('The file path is not valid')
     col = conn.cursor()
-    if not os.path.exists('*.csv'):
-        raise ValueError('No CSV files found to be processed')
     for csvfile in glob.glob(os.path.join(path, "*.csv")):
         tablename = os.path.splitext(os.path.basename(csvfile))[0]
 
