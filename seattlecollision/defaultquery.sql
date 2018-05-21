@@ -1,3 +1,5 @@
+#Framework for the three queries to pull the data for the before, during, after maps.
+
 BEFORE
 
 SELECT build_id, build_lat, build_long, build_start_dt, build_end_dt,
