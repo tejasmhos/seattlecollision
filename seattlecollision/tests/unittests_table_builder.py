@@ -4,7 +4,11 @@ module. It is to be eventually added to a single file that will
 perform unit testing on all our modules.
 """
 import unittest
+import sys
+sys.path.append('../')
 import table_builder
+
+
 
 
 class TestTableBuilder(unittest.TestCase):
