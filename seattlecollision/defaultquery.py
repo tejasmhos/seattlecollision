@@ -2,6 +2,8 @@
 
 import pandas as pd
 import sqlite3
+import numpy as np
+from datetime import datetime
 
 def create_default_query(file_path):
     import pandas as pd
@@ -36,4 +38,23 @@ def create_default_query(file_path):
     sample_db.close()
     return before_query, during_query, after_query
 
-before_df, during_query, after_query = create_default_query('sample.db')
+before_df, during_df, after_df = create_default_query('sample.db')
+
+before_df['build_start_dt'] = pd.to_datetime(before_df['build_start_dt'])
+before_df['build_end_dt'] = pd.to_datetime(before_df['build_end_dt'])
+during_df['build_start_dt'] = pd.to_datetime(during_df['build_start_dt'])
+during_df['build_end_dt'] = pd.to_datetime(during_df['build_end_dt'])
+after_df['build_start_dt'] = pd.to_datetime(after_df['build_start_dt'])
+after_df['build_end_dt'] = pd.to_datetime(after_df['build_end_dt'])
+
+months = 6
+before_df['norm_collisions'] = before_df['num_collisions']/((np.timedelta64(1, 'D')*months*365/12).astype(int))
+after_df['norm_collisions'] = after_df['num_collisions']/((np.timedelta64(1, 'D')*months*365/12).astype(int))
+during_df['norm_collisions'] = (during_df['num_collisions']/
+                                ((during_df['build_end_dt'] - during_df['build_start_dt']) / 
+                                 np.timedelta64(1, 'D')).astype(int))
+
+before_df.to_csv('default_before_df.csv')
+during_df.to_csv('default_during_df.csv')
+after_df.to_csv('default_after_df.csv')
+
