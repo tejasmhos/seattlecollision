@@ -38,6 +38,8 @@ def create_default_query(file_path):
     sample_db.close()
     return before_query, during_query, after_query
 
+
+
 before_df, during_df, after_df = create_default_query('sample.db')
 
 before_df['build_start_dt'] = pd.to_datetime(before_df['build_start_dt'])
