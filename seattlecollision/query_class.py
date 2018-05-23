@@ -29,8 +29,8 @@ id, b_lat, b_long'
 ng)*0.416667 AS during, SUM(coll_after) AS after FROM collidium_data W
 HERE radius < 500 AND base_year = 2017 AND (coll_days_from_build BETWE
 EN 0 AND 150 OR coll_days_from_build BETWEEN -1 AND -150) AND b_catego
-ry IN ('MULTIFAMILY', 'SINGLE FAMILY / DUPLEX') AND acc_type = Vehicle
- Only GROUP BY b_id, b_lat, b_long"
+ry IN ('MULTIFAMILY', 'SINGLE FAMILY / DUPLEX') AND acc_type = 'Vehicle
+ Only' GROUP BY b_id, b_lat, b_long"
 
 """
 class CollidiumQuery(object):
@@ -59,7 +59,7 @@ class CollidiumQuery(object):
 		elif arg == "All":
 			return ''
 		elif arg in valid_args:
-			return "AND %s = %s " % (label, arg)
+			return "AND %s = '%s' " % (label, arg)
 		else:
 			raise AttributeError("Attribute %s is invalid." % label)
 		
