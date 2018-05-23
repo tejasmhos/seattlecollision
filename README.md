@@ -1,1 +1,2 @@
 # Seattle Collision Research Tool
+[![Coverage Status](https://coveralls.io/repos/github/tejasmhos/seattlecollision/badge.svg?branch=master)](https://coveralls.io/github/tejasmhos/seattlecollision?branch=master)

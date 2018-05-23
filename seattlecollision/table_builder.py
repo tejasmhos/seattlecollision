@@ -22,9 +22,7 @@ def create_table(database, path):
     :param path: The path to a folder that contains a set of CSV files
     :return: Doesn't
     """
-    db_obj = database
-
-    conn = sqlite3.connect(db_obj)
+    conn = sqlite3.connect(database)
     conn.text_factory = str
     if not os.path.exists(path):
         raise ValueError('The file path is not valid')
