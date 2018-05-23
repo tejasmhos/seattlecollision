@@ -25,7 +25,7 @@ Raw Data Sources:
 Data Processing Assumptions:
  - Collisions were restricted to 2013 and later (buildings permit data starts in 2014)
  - Buildings were restricted to being over $1 Million in value, to focus on large projects
- - TODO: add rest of assumptions/restrictions
+ - TODO: add rest of assumptions/restrictions 
 """
 from datetime import datetime
 import os
