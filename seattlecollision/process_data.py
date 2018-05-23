@@ -89,8 +89,8 @@ def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
                                             "pedcylcount" : "c_cyc",
                                             "severitycode" : "c_severity_code",
                                             "severitydesc" : "c_severity_desc"})
-    collisions['c_veh'] = np.where(collisions['c_cyc'] == 0,
-                                   np.where(collisions['c_ped'] == 0, 1, 0), 0)
+    collisions['c_accident_type'] = np.where(collisions['c_cyc'] == 0,
+                                   np.where(collisions['c_ped'] == 0, "Vehicle Only", "Bike/Pedestrian"), "Bike/Pedestrian")
     collisions = collisions[collisions["c_severity_desc"] != "Unknown"]
     print("Woo hoo! Collisions complete.")
     return collisions
@@ -143,6 +143,7 @@ def buildings_clean(file_path=BUILDINGS_RAW_INFILE):
     buildings = buildings[buildings["Value"] > 1000000]
     buildings = buildings[pd.notnull(buildings["b_issue_date"])]
     buildings = buildings[pd.notnull(buildings["b_final_date"])]
+    buildings = buildings[buildings["b_final_date"] < datetime(2017, 4, 1)]
     buildings = buildings[buildings["Status"] != "CANCELLED"]
     buildings = buildings.rename(columns={"Application/Permit Number": "b_id",
                                           "Category" : "b_category",
