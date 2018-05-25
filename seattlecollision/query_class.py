@@ -47,7 +47,7 @@ class CollidiumQuery(object):
         """
         self.__valid_c_severity = ['All', 'Fatality', 'Serious Injury', 'Injury',
 		                                 'Property Damage Only']
-        self.__valid_c_type = ['All', 'Vehicle Only', 'Bike/Ped']
+        self.__valid_c_type = ['All', 'Vehicle Only', 'Bike/Pedestrian']
         self.__valid_b_category = ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL',
 		                                 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX']
 
