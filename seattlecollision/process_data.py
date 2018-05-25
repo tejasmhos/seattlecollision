@@ -25,7 +25,7 @@ Raw Data Sources:
 Data Processing Assumptions:
  - Collisions were restricted to 2013 and later (buildings permit data starts in 2014)
  - Buildings were restricted to being over $1 Million in value, to focus on large projects
- - TODO: add rest of assumptions/restrictions 
+ - TODO: add rest of assumptions/restrictions
 """
 from datetime import datetime
 import os
@@ -39,7 +39,7 @@ BUILDINGS_RAW_INFILE = "data/raw_data/raw_buildings_input.csv"
 # OUTPUT FILEPATHS
 COLLISIONS_PROCESSED_OUTFILE = "data/collisions.csv"
 BUILDINGS_PROCESSED_OUTFILE = "data/buildings.csv"
-RADIUS_PROCESSED_OUTFILE = "data/radius.csv"
+COLLIDIUM_PROCESSED_OUTFILE = "data/collidium_data.csv"
 
 def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
     """
@@ -89,8 +89,8 @@ def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
                                             "pedcylcount" : "c_cyc",
                                             "severitycode" : "c_severity_code",
                                             "severitydesc" : "c_severity_desc"})
-    collisions['c_accident_type'] = np.where(collisions['c_cyc'] == 0,
-                                   np.where(collisions['c_ped'] == 0, "Vehicle Only", "Bike/Pedestrian"), "Bike/Pedestrian")
+    tmp_cyc_or_ped = collisions['c_cyc'] + collisions['c_ped']
+    collisions['c_accident_type'] = np.where(tmp_cyc_or_ped > 0, "Bike/Pedestrian", "Vehicle Only")
     collisions = collisions[collisions["c_severity_desc"] != "Unknown"]
     print("Woo hoo! Collisions complete.")
     return collisions
@@ -155,7 +155,7 @@ def buildings_clean(file_path=BUILDINGS_RAW_INFILE):
     print("Woo hoo! Buildings Complete")
     return buildings
 
-def create_radius_table(collisions, buildings):
+def create_collidium_table(collisions, buildings):
     """
     Uses geopy's vincenty distance function to calculate collision distance
     from each building site. Distance is recorded in feet.
@@ -165,24 +165,31 @@ def create_radius_table(collisions, buildings):
 
     Args:
         collisions: a processed collisions pandas dataframe (returned by
-		    collisions_clean function)
+            collisions_clean function)
         buildings: a processed building permit pandas dataframe (returned by
-		    buildings_clean function)
+            buildings_clean function)
 
     Returns:
         Radius table as a pandas dataframe (see table specs below)
 
         Radius data table includes (for unique (building, collision) pairs):
-            build_id: (string) matches to buildings_clean table
-            coll_id: (string) mathces to collision_clean table
-            build_lat: (float) building latitude
-            build_long: (float) building longitude
-            build_start_dt: (datetime.date) date with time stripped
-            build_end_dt: (datetime.date) date with time stripped
-            coll_dt: (datetime.date) date with time stripped
-            coll_lat: (float) collision latitude
-            coll_long: (float) collision longitude
+            b_id: (string) matches to buildings_clean table
+            c_id: (string) mathces to collision_clean table
+            b_lat: (float) building latitude
+            b_long: (float) building longitude
+            b_category: (string) building category
+            b_start_dt: (datetime.date) date with time stripped
+            b_end_dt: (datetime.date) date with time stripped
+            c_dt: (datetime.date) date with time stripped
+            c_lat: (float) collision latitude
+            c_long: (float) collision longitude
+            acc_type: (string) collision type
+            acc_severity: (string) collision severity description
             radius: (float) distance in feet between building and collision
+            coll_before: (1 or 0) collision within 12 months before building period
+            coll_during: (float) during indicator normalized to one year of exposure
+            coll_after: (1 or 0) collision within 12 months after building period
+            coll_days_from_build: (int) number of days between collision and build period
     """
     rad_data = []
 
@@ -192,29 +199,53 @@ def create_radius_table(collisions, buildings):
             c_loc = (coll["c_lat"], coll["c_long"])
             dist = vincenty(b_loc, c_loc).ft
             if dist <= 1500:
-                rad_data.append({
-                    'build_id': build["b_id"],
-                    'coll_id': coll["c_id"],
-                    'build_lat': b_loc[0],
-                    'build_long':  b_loc[1],
-                    'build_start_dt': build["b_issue_date"],
-                    'build_end_dt': build["b_final_date"],
-                    'coll_dt': coll["c_datetime"],
-                    'coll_lat': c_loc[0],
-                    'coll_long': c_loc[1],
-                    'radius': dist
-                })
+                days_from_build = 0
+                before = 0
+                during = 0
+                after = 0
+                if coll["c_datetime"] < build["b_issue_date"]:
+                    days_from_build = (coll["c_datetime"] - build["b_issue_date"]).days
+                    before = 1
+                elif coll["c_datetime"] > build["b_final_date"]:
+                    days_from_build = (coll["c_datetime"] - build["b_final_date"]).days
+                    after = 1
+                else:
+                    # Adjust during indicator for one year of exposure
+                    during = ((build["b_final_date"] - build["b_issue_date"]).days)/365
+
+                if abs(days_from_build) <= 365:
+                    rad_data.append({
+                        'b_id': build["b_id"],
+                        'c_id': coll["c_id"],
+                        'b_lat': b_loc[0],
+                        'b_long':  b_loc[1],
+                        'b_category': build["b_category"],
+                        'b_start_dt': build["b_issue_date"],
+                        'b_end_dt': build["b_final_date"],
+                        'c_dt': coll["c_datetime"],
+                        'c_lat': c_loc[0],
+                        'c_long': c_loc[1],
+                        'c_type': coll["c_accident_type"],
+                        'c_severity': coll["c_severity_desc"].replace(' Collision', ''),
+                        'radius': dist,
+                        'coll_before': before,
+                        'coll_during': during,
+                        'coll_after': after,
+                        'coll_days_from_build': days_from_build
+                    })
+                else:
+                    pass
             else:
                 pass
-
+    print("Woo hoo! Collidium Data Complete")
     return pd.DataFrame(rad_data)
 
 # PROCESS DATAFRAMES
 COLLISIONS = collisions_clean()
 BUILDINGS = buildings_clean()
-RADIUS = create_radius_table(COLLISIONS, BUILDINGS)
+COLLIDIUM = create_collidium_table(COLLISIONS, BUILDINGS)
 
 # EXPORT TO CSV FILES
 COLLISIONS.to_csv(COLLISIONS_PROCESSED_OUTFILE)
 BUILDINGS.to_csv(BUILDINGS_PROCESSED_OUTFILE)
-RADIUS.to_csv(RADIUS_PROCESSED_OUTFILE)
+COLLIDIUM.to_csv(COLLIDIUM_PROCESSED_OUTFILE)
