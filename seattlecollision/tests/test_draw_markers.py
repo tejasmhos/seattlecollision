@@ -30,10 +30,12 @@ Attributes:
 
 import unittest
 import pandas as pd
+import sys
+sys.path.append('../')
 import draw_markers as dm
 
 
-with open('../data/Fake_Data_For_Draw_Markers.csv', encoding='ascii', errors='ignore') as csvfile:
+with open('../data/Test_Data_For_Draw_Markers.csv', encoding='ascii', errors='ignore') as csvfile:
     TEST_DATA = pd.read_csv(csvfile)
 
 class UnitTests(unittest.TestCase):
@@ -63,7 +65,7 @@ class UnitTests(unittest.TestCase):
         self.assertRaises(TypeError, dm.create_map, TEST_DATA.head(801), "before")
 
     def test_b_id_is_key(self):
-        ''' Tests if n_id is a key to function input.'''
+        ''' Tests if b_id is a key to function input.'''
         total_unique = len(TEST_DATA['b_id'].drop_duplicates())
         key_unique = len(TEST_DATA.drop_duplicates())
         self.assertTrue(total_unique == key_unique)

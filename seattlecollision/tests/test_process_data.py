@@ -9,8 +9,10 @@ test_rows, and test_file path.
 
 
 import unittest
-from data_clean import collisions_clean
-from data_clean import buildings_clean
+import sys
+sys.path.append('../')
+from process_data import collisions_clean
+from process_data import buildings_clean
 
 class TestDataClean(unittest.TestCase):
     """
