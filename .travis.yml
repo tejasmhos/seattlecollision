@@ -22,5 +22,4 @@ after_success:
     - coverage report
     - coveralls
 
-after_failure:
-    - mailx -s "Failed CI" tejash@uw.edu
+
