@@ -9,8 +9,6 @@ sys.path.append('../')
 import table_builder
 
 
-
-
 class TestTableBuilder(unittest.TestCase):
     """
     This class subclasses unittest.TestCase to define a testcase. Each
