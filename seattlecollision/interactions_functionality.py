@@ -34,8 +34,9 @@ def generate_categories(cols_needed):
     """
     
     data_fields = set(["b_category", "base_year","c_severity", "c_type"])
-    if not set(cols_needed).issubset(set(data_fields):
-        raise IndexError("cols_needed input must only contain the fields: 'b_category', 'base_year','c_severity', 'c_type'")
+    # if not set(cols_needed).issubset(set(data_fields):
+        # raise IndexError("cols_needed input must only contain the fields: 'b_category', 'base_year','c_severity', 'c_type'")
+        
     categories = list()
     i = 0
     for col in cols_needed:
