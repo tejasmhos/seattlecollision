@@ -39,13 +39,13 @@ def create_map(data, period):
     Args:
     data: a dataframe that contains the following fields:
         b_id (int): buiding id number (key)
-        b_latitude (float): latitude of building
-        b_longitude (float): longitude of building
-        col_before (int): Number of collisions that happend in period prior
+        b_lat (float): latitude of building
+        b_long (float): longitude of building
+        before (int): Number of collisions that happend in period prior
         to construction
-        col_duirng (int): Number of collisions that happend in period during
+        duirng (int): Number of collisions that happend in period during
         construction
-        col_after (int): Number of collisions that happend in period after
+        after (int): Number of collisions that happend in period after
         construction
 
     period (string): String of value "before", "during" or "after"
@@ -71,21 +71,21 @@ def create_map(data, period):
 
     """
 
-    true_set = set(['b_latitude', 'col_after', 'col_before', 'b_id', 'b_longitude', 'col_during'])
+    true_set = set(['b_lat', 'after', 'before', 'b_id', 'b_long', 'during'])
     if not set(list(data)) == true_set:
         raise IndexError("Data set does not contain correct fields")
 
     if data.shape[0] > 800:
         raise TypeError("Please select 800 or fewer observations from dataframe.")
 
-    location = [np.mean(data['b_latitude']), np.mean(data['b_longitude'])]
+    location = [np.mean(data['b_lat']), np.mean(data['b_long'])]
 
     my_map = folium.Map(location=location, zoom_start=11)
 
     for index, row in data.iterrows(): #pylint: disable=unused-variable
         folium.CircleMarker(
-            location=[row['b_latitude'], row['b_longitude']],
-            radius=row[str('col_'+ period)]/20,
+            location=[row['b_lat'], row['b_long']],
+            radius=row[str(period)]/20,
             fill=True,
             fill_color='#132b5e').add_to(my_map)
     return my_map
@@ -102,11 +102,11 @@ def place_maps(data):
         b_id (int): buiding id number (key)
         b_latitude (float): latitude of building
         b_longitude (float): longitude of building
-        col_before (int): Number of collisions that happend in period prior
+        before (int): Number of collisions that happend in period prior
         to construction
-        col_duirng (int): Number of collisions that happend in period during
+        during (int): Number of collisions that happend in period during
         construction
-        col_after (int): Number of collisions that happend in period after
+        after (int): Number of collisions that happend in period after
         construction.
 
     Returns:
@@ -119,7 +119,6 @@ def place_maps(data):
     Raises
         IndexError: If a dataframe is passed to the create_map function or
         the place_maps function that does not contain the correct fields, an
-        Index Error is raised.
     """
 
     map_grid = branca.element.Figure()
@@ -137,3 +136,4 @@ def place_maps(data):
     loc_3.add_child(map_3)
 
     return map_grid
+
