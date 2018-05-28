@@ -96,7 +96,7 @@ class CollidiumQuery(object):
         if self.duration != 12:
             qstring += "AND (coll_days_from_build BETWEEN 0 AND "
             qstring += "%d OR coll_days_from_build BETWEEN -1 AND %d) " %(
-                30*self.duration, -30*self.duration)
+                30.4167*self.duration, -30.4167*self.duration)
 
         # Dynamic string constructor checks other attributes
         qstring += self.__dynamic_substring__('b_category', self.b_category,
@@ -124,7 +124,7 @@ class CollidiumQuery(object):
 
     def set_b_category(self, b_category):
         """
-		so glad TODO doesn't triger pylint
+		so glad TODO doesn't trigger pylint
         """
         self.b_category = b_category
 
