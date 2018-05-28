@@ -16,11 +16,10 @@ install:
     - pip install -r requirements.txt
 
 script:
-    - nosetests
+    - coverage run -m unittest discover
 
 after_success:
     - coverage report
     - coveralls
 
-after_failure:
-    - mailx -s "Failed CI" tejash@uw.edu
+
