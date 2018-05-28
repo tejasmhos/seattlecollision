@@ -190,6 +190,7 @@ def create_collidium_table(collisions, buildings):
             coll_during: (float) during indicator normalized to one year of exposure
             coll_after: (1 or 0) collision within 12 months after building period
             coll_days_from_build: (int) number of days between collision and build period
+			base_year: (int) the year building construction was completed
     """
     rad_data = []
 
@@ -211,7 +212,7 @@ def create_collidium_table(collisions, buildings):
                     after = 1
                 else:
                     # Adjust during indicator for one year of exposure
-                    during = ((build["b_final_date"] - build["b_issue_date"]).days)/365
+                    during = 365/((build["b_final_date"] - build["b_issue_date"]).days)
 
                 if abs(days_from_build) <= 365:
                     rad_data.append({
@@ -231,7 +232,8 @@ def create_collidium_table(collisions, buildings):
                         'coll_before': before,
                         'coll_during': during,
                         'coll_after': after,
-                        'coll_days_from_build': days_from_build
+                        'coll_days_from_build': days_from_build,
+						'base_year': build["b_final_date"].year
                     })
                 else:
                     pass
