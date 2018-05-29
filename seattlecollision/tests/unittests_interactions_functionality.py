@@ -1,4 +1,6 @@
 import unittest
+import sys
+sys.path.append('../')
 import interactions_functionality as int_func
 
 TEST_DB = int_func.generate_connection('data/', 'test_db')
