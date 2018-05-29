@@ -13,7 +13,6 @@ import os
 import sqlite3
 import pandas as pd
 
-
 def create_table(database, path):
     """
     This function takes as input a database, along with a path to a folder
@@ -31,4 +30,5 @@ def create_table(database, path):
     dataframe = pd.read_csv(path)
     del dataframe['Unnamed: 0']
     dataframe.to_sql('collidium_data', conn, if_exists='replace', index=False)
+    print('Dataprocessing: sqlite database constructed. (Woohoo!)')
     conn.close()

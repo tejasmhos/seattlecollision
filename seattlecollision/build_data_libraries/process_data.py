@@ -221,7 +221,7 @@ def create_collidium_table(collisions, buildings):
                         'coll_during': during,
                         'coll_after': after,
                         'coll_days_from_build': days_from_build,
-						'base_year': build["b_final_date"].year
+                        'base_year': build["b_final_date"].year
                     })
                 else:
                     pass

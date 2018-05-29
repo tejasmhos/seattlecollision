@@ -1,11 +1,18 @@
 """
 TODO Insert docstring
+
+TODO: Add error checking for zero results (maybe just draw blank maps but right now it fails).
+
+TODO:
+I commented out lines below that did not work or were no longer necessary. Please review
+and delete if you agree. --Ian (Also do a find on the word 'TODO' because I added another inline
+comment).
 """
 import sqlite3
 import os
 import pandas as pd
 
-import table_builder
+#import table_builder
 import draw_markers
 from query_class import CollidiumQuery
 
@@ -15,18 +22,18 @@ def generate_connection(data_directory, db_name):
     """
     if not os.path.exists(str(data_directory)):
         raise ValueError(str((data_directory) +" is not a valid path"))
-    table_builder.create_table(db_name, data_directory)
+    #table_builder.create_table(db_name, data_directory)
     connection = sqlite3.connect(db_name)
     sql_cursor = connection.cursor()
     sql_cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    table_list = sql_cursor.fetchall()
-    table_list =  [item for sublist in table_list for item in sublist]
-    true_table = 'collidium_data'
-    if not true_table in table_list:
-        raise Exception("The directory must contain a file called 'collidium_data.csv'")   
+    #table_list = sql_cursor.fetchall()
+    #table_list =  [item for sublist in table_list for item in sublist]
+    #true_table = 'collidium_data'
+    #if not true_table in table_list:
+    #    raise Exception("The directory must contain a file called 'collidium_data.csv'")   
     return sql_cursor
 
-SQL_CURSOR = generate_connection("data/", "collidum_db")
+SQL_CURSOR = generate_connection("data/", "data/Collidium") #TODO Why is this hardcoded? If it is necessary to store this constant, move it to just below the imports so it's more visible.
 
 def generate_categories(cols_needed):
     """
@@ -57,8 +64,8 @@ def generate_table(query):
     SQL_CURSOR.execute(query)
     temp = pd.DataFrame(SQL_CURSOR.fetchall())
     temp.columns = list(map(lambda x: x[0], SQL_CURSOR.description))
-    temp['b_lat'] = temp.b_lat.astype(float)
-    temp['b_long'] = temp.b_long.astype(float)
+    #temp['b_lat'] = temp.b_lat.astype(float)
+    #temp['b_long'] = temp.b_long.astype(float)
     return temp
 
 def build_type_interact(building_category):
