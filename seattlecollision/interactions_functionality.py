@@ -22,7 +22,7 @@ def generate_connection(data_directory):
         raise ValueError(str((data_directory) +" is not a valid path"))
     connection = sqlite3.connect(data_directory)
     sql_cursor = connection.cursor()
-    sql_cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")  
+    sql_cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
     return sql_cursor
 
 
@@ -31,10 +31,6 @@ def generate_categories(cols_needed):
     """
     TODO Insert docstring
     """
-    
-    data_fields = set(["b_category", "base_year","c_severity", "c_type"])
-    # if not set(cols_needed).issubset(set(data_fields)):
-        # raise IndexError("cols_needed input must only contain the fields: 'b_category', 'base_year','c_severity', 'c_type'")
 
     categories = list()
     i = 0
