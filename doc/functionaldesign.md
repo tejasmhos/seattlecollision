@@ -1,3 +1,6 @@
+## Note: To be updated
+As we have implemented our intended design some things have not worked as we anticipated. As a result we have made some changes to the design that are not yet reflected in this document. This document will be updated. 
+
 # Seattle Collision Research Tool
 
 ## Pre-dependencies
