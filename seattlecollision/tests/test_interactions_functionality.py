@@ -1,5 +1,8 @@
 """
-TODO Insert doctrsing
+Module to test interactions_functionality module
+
+
+TODO comolete doctrsing
 """
 import sys
 import unittest
@@ -12,6 +15,12 @@ TEST_DF = TEST_DB.fetchall()
 
 class ConnectionTests(unittest.TestCase):
     '''Conducts test on the performance of the generate_connections function.
+    
+    This class tests three functions in the interactions_functionality module.
+    These include the generate_connection function, the generate_categories 
+    function and the generate_table function. The other functions in this module 
+    (those ending in _interact) are not tested in this module because they generate
+    elements of the user interface that cannot be tested by unit tests.
 
     This class conducts three tests, for the pupose of validating the functionality
     of the interactions_functionality module. Each test is conducted within a function, as
