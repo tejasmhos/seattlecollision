@@ -5,16 +5,12 @@ Data Processing Module
 
 Module Summary:
 The process_data.py module includes the functions used to clean the collisions and building
-permit datasets, as well as a function to create a radius table of building/collision pairs
+permit datasets, as well as a function to create a collidium table of building/collision pairs
 within 1500 feet of each other. The two *_clean functions take the respective raw data as
-input and output a pandas dataframe of the processed data tables. The create_radius_table
-uses each of the dataframes created in the *_clean functions to build a new data table of
-building and collision pairs within 1500 feet of each other. The geopy library's vincenty
-function is used to determine building/collision distances.
-
-Infile/outfile constants are set immediately after the import statements in this module. A
-short script is run at the EOF to build each of the required processed dataframes and output
-them to the specified locations in csv format.
+input and output a pandas dataframe of the processed data tables. The
+create_collidium_table_table uses each of the dataframes created in the *_clean functions
+to build a new data table of building and collision pairs within 1500 feet of each other.
+The geopy library's vincenty function is used to determine building/collision distances.
 
 Exceptions (ValueError) are raised if either of the raw data file paths are invalid.
 
@@ -33,15 +29,7 @@ from geopy.distance import vincenty
 import pandas as pd
 import numpy as np
 
-# INPUT FILEPATHS
-COLLISIONS_RAW_INFILE = "data/raw_data/raw_collisions_input.csv"
-BUILDINGS_RAW_INFILE = "data/raw_data/raw_buildings_input.csv"
-# OUTPUT FILEPATHS
-COLLISIONS_PROCESSED_OUTFILE = "data/collisions.csv"
-BUILDINGS_PROCESSED_OUTFILE = "data/buildings.csv"
-COLLIDIUM_PROCESSED_OUTFILE = "data/collidium_data.csv"
-
-def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
+def collisions_clean(infile_path):
     """
     Filters and removes unneeded observations from the collisions dataset
 
@@ -49,7 +37,7 @@ def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
     columns, and calculates a new vehicles only crash column based off the values in ped/cyc.
 
     Args:
-        file_path (str): The file path of the Collisions.csv file from Seattle Open Data
+        infile_path (str): The file path of the Collisions.csv file from Seattle Open Data
 
     Returns:
         Dataframe of the filtered and clean collisions dataset. A .csv file is also created
@@ -58,9 +46,9 @@ def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
     Raises:
         ValueError: If the file path does not exist.
     """
-    if not os.path.exists(file_path):
+    if not os.path.exists(infile_path):
         raise ValueError('The file path is not valid')
-    collisions = pd.read_csv(file_path, sep=',', header=0)
+    collisions = pd.read_csv(infile_path, sep=',', header=0)
     date_time = []
     for i in range(0, len(collisions)):
         if len(collisions['incdttm'][i]) > 10:
@@ -92,10 +80,10 @@ def collisions_clean(file_path=COLLISIONS_RAW_INFILE):
     tmp_cyc_or_ped = collisions['c_cyc'] + collisions['c_ped']
     collisions['c_accident_type'] = np.where(tmp_cyc_or_ped > 0, "Bike/Pedestrian", "Vehicle Only")
     collisions = collisions[collisions["c_severity_desc"] != "Unknown"]
-    print("Woo hoo! Collisions complete.")
+    print("Data Processing: Collisions Processing Complete. (Woohoo!)")
     return collisions
 
-def buildings_clean(file_path=BUILDINGS_RAW_INFILE):
+def buildings_clean(infile_path):
     """
     Filters and removes unneeded observations from the Building Permits dataset
 
@@ -103,7 +91,7 @@ def buildings_clean(file_path=BUILDINGS_RAW_INFILE):
     columns, and calculates a new vehicles only crash column based off the values in ped/cyc.
 
     Args:
-        file_path (str): The file path of the clean_permits.csv file from Seattle Open Data
+        infile_path (str): The file path of the clean_permits.csv file from Seattle Open Data
 
     Returns:
         Dataframe of the filtered and clean collisions dataset. A .csv file is also created
@@ -112,7 +100,7 @@ def buildings_clean(file_path=BUILDINGS_RAW_INFILE):
     Raises:
         ValueError: If the file path does not exist.
     """
-    buildings = pd.read_csv(file_path, sep=',', header=0, index_col=0)
+    buildings = pd.read_csv(infile_path, sep=',', header=0, index_col=0)
     issue_date = []
     final_date = []
     for i in range(0, len(buildings)):
@@ -152,7 +140,7 @@ def buildings_clean(file_path=BUILDINGS_RAW_INFILE):
                                           "Latitude" : "b_lat",
                                           "Longitude" : "b_long"})
     buildings.drop("Action Type", axis=1, inplace=True)
-    print("Woo hoo! Buildings Complete")
+    print("Data Processing: Buildings Processing Complete. (Woohoo!)")
     return buildings
 
 def create_collidium_table(collisions, buildings):
@@ -239,15 +227,5 @@ def create_collidium_table(collisions, buildings):
                     pass
             else:
                 pass
-    print("Woo hoo! Collidium Data Complete")
+    print("Data Processing: Collidium Data Created. (Woohoo!)")
     return pd.DataFrame(rad_data)
-
-# PROCESS DATAFRAMES
-COLLISIONS = collisions_clean()
-BUILDINGS = buildings_clean()
-COLLIDIUM = create_collidium_table(COLLISIONS, BUILDINGS)
-
-# EXPORT TO CSV FILES
-COLLISIONS.to_csv(COLLISIONS_PROCESSED_OUTFILE)
-BUILDINGS.to_csv(BUILDINGS_PROCESSED_OUTFILE)
-COLLIDIUM.to_csv(COLLIDIUM_PROCESSED_OUTFILE)
