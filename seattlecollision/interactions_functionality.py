@@ -11,29 +11,21 @@ comment).
 import sqlite3
 import os
 import pandas as pd
-
-#import table_builder
 import draw_markers
 from query_class import CollidiumQuery
 
-def generate_connection(data_directory, db_name):
+def generate_connection(data_directory):
     """
     TODO Insert docstring
     """
     if not os.path.exists(str(data_directory)):
         raise ValueError(str((data_directory) +" is not a valid path"))
-    #table_builder.create_table(db_name, data_directory)
-    connection = sqlite3.connect(db_name)
+    connection = sqlite3.connect(data_directory)
     sql_cursor = connection.cursor()
-    sql_cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    #table_list = sql_cursor.fetchall()
-    #table_list =  [item for sublist in table_list for item in sublist]
-    #true_table = 'collidium_data'
-    #if not true_table in table_list:
-    #    raise Exception("The directory must contain a file called 'collidium_data.csv'")   
+    sql_cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")  
     return sql_cursor
 
-SQL_CURSOR = generate_connection("data/", "data/Collidium") #TODO Why is this hardcoded? If it is necessary to store this constant, move it to just below the imports so it's more visible.
+
 
 def generate_categories(cols_needed):
     """
@@ -48,8 +40,9 @@ def generate_categories(cols_needed):
     i = 0
     for col in cols_needed:
         query_string = str("select distinct " + col + " from collidium_data")
-        SQL_CURSOR.execute(query_string)
-        temp = pd.DataFrame(SQL_CURSOR.fetchall())
+        sql_cursor = generate_connection("data/Collidium")
+        sql_cursor.execute(query_string)
+        temp = pd.DataFrame(sql_cursor.fetchall())
         temp = temp.values.tolist()
         temp = [val for sublist in temp for val in sublist]
         temp.insert(0, 'All')
@@ -61,11 +54,10 @@ def generate_table(query):
     """
     TODO Insert docstring
     """
-    SQL_CURSOR.execute(query)
-    temp = pd.DataFrame(SQL_CURSOR.fetchall())
-    temp.columns = list(map(lambda x: x[0], SQL_CURSOR.description))
-    #temp['b_lat'] = temp.b_lat.astype(float)
-    #temp['b_long'] = temp.b_long.astype(float)
+    sql_cursor = generate_connection("data/Collidium")
+    sql_cursor.execute(query)
+    temp = pd.DataFrame(sql_cursor.fetchall())
+    temp.columns = list(map(lambda x: x[0], sql_cursor.description))
     return temp
 
 def build_type_interact(building_category):
