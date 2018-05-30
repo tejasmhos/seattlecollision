@@ -123,6 +123,17 @@ def place_maps(data):
     """
 
     map_grid = branca.element.Figure()
+    titles = branca.element.Element('<big><b><table class="equalDivide" ' + \
+                                    'cellpadding="0" cellspacing="0" ' + \
+                                    'width="100%" border="0"><tr>' + \
+                                    '<td  width="33%"><center>Before ' + \
+                                    'Construction</center></td>' + \
+                                    '<td  width="33%"><center>During ' + \
+                                    'Construction</center></td>' + \
+                                    '<td  width="33%"><center>After ' +\
+                                    'Construction</center></td></tr>' + \
+                                    '</table></b></big>')
+    map_grid.html.add_child(titles)
 
     map_1 = create_map(data, "before")
     map_2 = create_map(data, "during")
