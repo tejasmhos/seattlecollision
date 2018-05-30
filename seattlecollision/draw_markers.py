@@ -81,14 +81,22 @@ def create_map(data, period):
 
     location = [np.mean(data['b_lat']), np.mean(data['b_long'])]
 
-    my_map = folium.Map(location=location, zoom_start=11)
+    my_map = folium.Map(location=location, zoom_start=11, tiles='Mapbox Bright')
 
     for index, row in data.iterrows(): #pylint: disable=unused-variable
+        if row[str(period)] < row['before']:
+            fill_color = '#53c68c'
+        elif row[str(period)] > row['before']:
+            fill_color = '#ff6666'
+        else :
+            fill_color = '#809fff'       
         folium.CircleMarker(
             location=[row['b_lat'], row['b_long']],
             radius=row[str(period)]/20,
             fill=True,
-            fill_color='#132b5e').add_to(my_map)
+            color=fill_color,
+            control_scale=True,
+            fill_color=fill_color).add_to(my_map)
     return my_map
 
 
