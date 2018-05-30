@@ -31,6 +31,7 @@ This module raises the following exceptions:
 import branca
 import folium
 import numpy as np
+from branca.element import *
 
 def create_map(data, period):
     """
@@ -142,9 +143,12 @@ def place_maps(data):
     loc_2 = map_grid.add_subplot(1, 3, 2)
     loc_3 = map_grid.add_subplot(1, 3, 3)
 
+    loc_1.add_child(IFrame('Before'))
+
     loc_1.add_child(map_1)
     loc_2.add_child(map_2)
     loc_3.add_child(map_3)
+
 
     return map_grid
 
