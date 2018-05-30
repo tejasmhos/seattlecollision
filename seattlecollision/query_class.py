@@ -34,6 +34,9 @@ ry IN ('MULTIFAMILY', 'SINGLE FAMILY / DUPLEX') AND c_type = 'Vehicle
 """
 class CollidiumQuery(object):
     """
+	Collidium Query Object Class
+	
+	
     Class docstring actually goes here. TODO
     """
 	# Locally disable linter to allow for reasonable object construction:
@@ -95,7 +98,7 @@ class CollidiumQuery(object):
         qstring += "AND base_year = %d " % self.base_year
         if self.duration != 12:
             qstring += "AND (coll_days_from_build BETWEEN 0 AND "
-            qstring += "%d OR coll_days_from_build BETWEEN -1 AND %d) " %(
+            qstring += "%d OR coll_days_from_build BETWEEN %d AND -1) " %(
                 30.4167*self.duration, -30.4167*self.duration)
 
         # Dynamic string constructor checks other attributes
