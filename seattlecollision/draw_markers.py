@@ -138,7 +138,7 @@ def place_maps(data):
                                     'Construction</center></td>' + \
                                     '<td  width="33%"><center>During ' + \
                                     'Construction</center></td>' + \
-                                    '<td  width="33%"><center>After ' +\
+                                    '<td  width="33%"><center>After ' + \
                                     'Construction</center></td></tr>' + \
                                     '</table></b></big>')
     map_grid.html.add_child(titles)
