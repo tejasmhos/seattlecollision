@@ -93,6 +93,7 @@ def create_map(data, period):
             location=[row['b_lat'], row['b_long']],
             radius=row[str(period)]/20,
             fill=True,
+            popup=str('Number of collisions: '+ str(round(row[str(period)], 0))),
             color=fill_color,
             control_scale=True,
             fill_color=fill_color).add_to(my_map)
