@@ -5,7 +5,7 @@ perform unit testing on all our modules.
 """
 import unittest
 import sys
-sys.path.append('../build_data_libraries/')
+sys.path.append('seattlecollision/build_data_libraries/')
 import table_builder
 
 

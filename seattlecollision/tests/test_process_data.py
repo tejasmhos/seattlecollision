@@ -10,7 +10,7 @@ test_rows, and test_file path.
 
 import unittest
 import sys
-sys.path.append('../build_data_libraries/')
+sys.path.append('seattlecollision/build_data_libraries/')
 from process_data import collisions_clean
 from process_data import buildings_clean
 

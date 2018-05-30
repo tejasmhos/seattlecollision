@@ -31,7 +31,7 @@ Attributes:
 import unittest
 import pandas as pd
 import sys
-sys.path.append('../')
+sys.path.append('seattlecollision/')
 import draw_markers as dm
 
 

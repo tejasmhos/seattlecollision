@@ -6,7 +6,7 @@ TODO comolete doctrsing
 """
 import sys
 import unittest
-sys.path.append('../')
+sys.path.append('seattlecollision/')
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
 TEST_DB = int_func.generate_connection("../data/Collidium")
