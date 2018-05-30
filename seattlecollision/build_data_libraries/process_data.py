@@ -100,6 +100,8 @@ def buildings_clean(infile_path):
     Raises:
         ValueError: If the file path does not exist.
     """
+    if not os.path.exists(infile_path):
+        raise ValueError('The file path is not valid')
     buildings = pd.read_csv(infile_path, sep=',', header=0, index_col=0)
     issue_date = []
     final_date = []
