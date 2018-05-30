@@ -7,9 +7,10 @@ TODO comolete doctrsing
 import sys
 import unittest
 sys.path.append('seattlecollision/')
+sys.path.append('seattlecollsion/data')
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
-TEST_DB = int_func.generate_connection("../data/Collidium")
+TEST_DB = int_func.generate_connection("seattlecollision/data/Collidium")
 TEST_DB.execute("select * from collidium_data")
 TEST_DF = TEST_DB.fetchall()
 

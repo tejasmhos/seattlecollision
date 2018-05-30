@@ -11,6 +11,7 @@ test_rows, and test_file path.
 import unittest
 import sys
 sys.path.append('seattlecollision/build_data_libraries/')
+sys.path.append('seattlecollsion/data')
 from process_data import collisions_clean
 from process_data import buildings_clean
 
@@ -59,7 +60,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_collision_output = collisions_clean("../data/raw_data/raw_collisions_input.csv")
+        processed_collision_output = collisions_clean("seattlecollision/data/raw_data/raw_collisions_input.csv")
         processed_collision_output_dup =  processed_collision_output.drop_duplicates(["c_id"])
         self.assertTrue(processed_collision_output.shape[0] ==  processed_collision_output_dup.shape[0])
 
@@ -72,7 +73,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_buildings_output = buildings_clean("../data/raw_data/raw_buildings_input.csv")
+        processed_buildings_output = buildings_clean("seattlecollision/data/raw_data/raw_buildings_input.csv")
         processed_buildings_output_dup =  processed_buildings_output.drop_duplicates(["b_id"])
         self.assertTrue(processed_buildings_output.shape[0] ==  processed_buildings_output_dup.shape[0])
     
@@ -86,7 +87,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_collision_output = collisions_clean("../data/raw_data/raw_collisions_input.csv")
+        processed_collision_output = collisions_clean("seattlecollision/data/raw_data/raw_collisions_input.csv")
         self.assertTrue(processed_collision_output.shape[0] >= 10)
 
     def test_buildings_rows(self):
@@ -98,7 +99,7 @@ class TestDataClean(unittest.TestCase):
         Returns:
             True (bool) if the condition is true
         """
-        processed_buildings_output = buildings_clean("../data/raw_data/raw_buildings_input.csv")
+        processed_buildings_output = buildings_clean("seattlecollision/data/raw_data/raw_buildings_input.csv")
         self.assertTrue(processed_buildings_output.shape[0] >= 10)
 
 if __name__ == '__main__':
