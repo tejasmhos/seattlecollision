@@ -18,6 +18,12 @@ DATA_DIRECTORY = "seattlecollision/data/Collidium"
 
 TEST_CONNECTION = int_func.generate_connection(DATA_DIRECTORY)
 TEST_DF = int_func.generate_table("select * from collidium_data", data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
+BAD_DF = int_func.generate_table("""SELECT * FROM collidium_data 
+        WHERE base_year != 2016 AND 
+        (coll_days_from_build BETWEEN 185 AND 334 OR coll_days_from_build BETWEEN -334 AND -185) AND 
+        b_category != 'COMMERCIAL' AND 
+        c_severity != 'Injury' 
+        AND c_type != 'Vehicle Only'""", data_directory=DATA_DIRECTORY)
 
 class TestGenerateConnections(unittest.TestCase):
     '''Conducts test on the performance of the generate_connections function.
@@ -175,3 +181,5 @@ class TestBuildTypeInteract(unittest.TestCase):
 
 SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateConnections)
 _ = unittest.TextTestRunner().run(SUITE)
+
+int_func.build_type_interact(building_category="All", data_directory=DATA_DIRECTORY)
