@@ -72,9 +72,10 @@ def build_type_interact(building_category, data_directory="data/Collidium"):
     query_builder.set_b_category(building_category)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    if not mapping_data.shape[0] > 0:
-        raise Exception("The selected filter eliminated all data elements")
-    print(mapping_data)
+    try:
+        mapping_data.shape[0] > 0
+    except:
+        print('The filter you chose filtered out all the data!')
     return draw_markers.place_maps(mapping_data)
 
 def year_int_interact(building_year, collision_interval, data_directory="data/Collidium"):
@@ -140,5 +141,6 @@ def all_factor_interact(building_category, building_year, collision_interval, co
     query_builder.set_c_type(collision_type)
     query_builder.set_radius(radius_from_building)
     whole_query = query_builder.get_qstring()
+    print(whole_query)
     mapping_data = generate_table(whole_query, data_directory)
     return draw_markers.place_maps(mapping_data)
