@@ -18,7 +18,7 @@ DATA_DIRECTORY = "seattlecollision/data/Collidium"
 
 TEST_CONNECTION = int_func.generate_connection(DATA_DIRECTORY)
 TEST_DF = int_func.generate_table("select * from collidium_data", data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
-BAD_DF = int_func.generate_table("""SELECT * FROM collidium_data 
+BAD_DF = int_func.generate_table("""SELECT * FROM collidium_data
         WHERE base_year != 2016 AND 
         (coll_days_from_build BETWEEN 185 AND 334 OR coll_days_from_build BETWEEN -334 AND -185) AND 
         b_category != 'COMMERCIAL' AND 
@@ -92,7 +92,7 @@ class TestGenerateCategories(unittest.TestCase):
     def test_cols_needed(self):
         """Tests that invalid input raises an IndexError"""
         bad_cols_needed = ["bad_category", "base_year", "c_severity", "c_type"]
-        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed, data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
+        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed, data_directory=DATA_DIRECTORY)  #pylint: disable=line-too-long
 
     def test_output(self):
         '''Ensures function outputs the correct lists.'''
@@ -172,8 +172,8 @@ class TestBuildTypeInteract(unittest.TestCase):
 
     def filter_exception(self):
         '''Ensures function returns output with at least 100 rows.'''
-        self.assertRaises(Exception, int_func.build_type_interact, building_category="None", data_directory=DATA_DIRECTORY)
-        self.assertRaises(Exception, int_year_int_interact, building_year=2015, collision_interval=12, data_directory=DATA_DIRECTORY)
+        self.assertRaises(Exception, int_func.build_type_interact, building_category="None", data_directory=DATA_DIRECTORY)  #pylint: disable=line-too-long
+        self.assertRaises(Exception, int_func.year_int_interact, building_year=2015, collision_interval=12, data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
 
     def test_invalid_path_error(self):
         '''Tests whether an invalid path raises a ValueError exception.'''
