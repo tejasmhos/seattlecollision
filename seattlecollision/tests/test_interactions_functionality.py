@@ -6,12 +6,13 @@ TODO comolete doctrsing
 """
 import sys
 import unittest
-sys.path.append('../')
+sys.path.append('seattlecollision/')
+sys.path.append('seattlecollision/data')
 sys.path.append('seattlecollision/tests')
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
-TEST_CONNECTION = int_func.generate_connection("../data/Collidium")
-TEST_DF = int_func.generate_table("select * from collidium_data", data_directory="../data/Collidium") #pylint: disable=line-too-long
+TEST_CONNECTION = int_func.generate_connection("seattlecollision/data/Collidium")
+TEST_DF = int_func.generate_table("select * from collidium_data", data_directory="seattlecollision/data/Collidium") #pylint: disable=line-too-long
 
 
 
@@ -82,12 +83,12 @@ class TestGenerateCategories(unittest.TestCase):
     def test_cols_needed(self):
         """Tests that invalid input raises an IndexError"""
         bad_cols_needed = ["bad_category", "base_year", "c_severity", "c_type"]
-        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed, data_directory="../data/Collidium") #pylint: disable=line-too-long
+        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed, data_directory="seattlecollision/data/Collidium") #pylint: disable=line-too-long
 
     def test_output(self):
         '''Ensures function outputs the correct lists.'''
         cols_needed = ["b_category", "base_year", "c_severity", "c_type"]
-        test_categories = int_func.generate_categories(cols_needed, data_directory="../data/Collidium") #pylint: disable=line-too-long
+        test_categories = int_func.generate_categories(cols_needed, data_directory="seattlecollision/data/Collidium") #pylint: disable=line-too-long
         true_output = (['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'], ['All', 2016, 2015, 2017, 2014, 2013], ['All', 'Property Damage Only', 'Injury', 'Serious Injury', 'Fatality'], ['All', 'Vehicle Only', 'Bike/Pedestrian']) #pylint: disable=line-too-long
         self.assertTrue(test_categories == true_output)
 
@@ -133,5 +134,5 @@ class TestGenerateTable(unittest.TestCase):
         self.assertRaises(Exception, int_func.generate_table, 'badPath')
 
 
-if __name__ == '__main__':
-    unittest.main()
+SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateConnections)
+_ = unittest.TextTestRunner().run(SUITE)
