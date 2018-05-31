@@ -170,14 +170,20 @@ class TestBuildTypeInteract(unittest.TestCase):
     #     '''Tests whether function output has correct column names.'''
     #     self.assertTrue(len(list(TEST_DF)) > 0)
 
-    def filter_exception(self):
+    def build_filter_exception(self):
         '''Ensures function returns output with at least 100 rows.'''
         self.assertRaises(Exception, int_func.build_type_interact, building_category="None", data_directory=DATA_DIRECTORY)  #pylint: disable=line-too-long
-        self.assertRaises(Exception, int_func.year_int_interact, building_year='bad', collision_interval='bad', data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
 
-    def test_invalid_path_error(self):
+    def test_build_invalid_path_error(self):
         '''Tests whether an invalid path raises a ValueError exception.'''
         self.assertRaises(ValueError, int_func.build_type_interact, building_category="All", data_directory='badPath') #pylint: disable=line-too-long
+
+    def year_filter_exception(self):
+        '''Ensures function returns output with at least 100 rows.'''
+        self.assertRaises(Exception, int_func.year_int_interact, building_year=2010, collision_interval=0, data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
+
+    def test_year_invalid_path_error(self):
+        '''Tests whether an invalid path raises a ValueError exception.'''
         self.assertRaises(ValueError, int_func.year_int_interact, building_year=2015, collision_interval=12, data_directory='badPath') #pylint: disable=line-too-long
 
 
