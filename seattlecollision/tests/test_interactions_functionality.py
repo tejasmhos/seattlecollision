@@ -6,17 +6,18 @@ TODO comolete doctrsing
 """
 import sys
 import unittest
-
+sys.path.append('../')
 sys.path.append('seattlecollision/')
 sys.path.append('seattlecollision/data')
 sys.path.append('seattlecollision/tests')
 
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
-TEST_CONNECTION = int_func.generate_connection("seattlecollision/data/Collidium")
-TEST_DF = int_func.generate_table("select * from collidium_data", data_directory="seattlecollision/data/Collidium") #pylint: disable=line-too-long
+DATA_DIRECTORY = "seattlecollision/data/Collidium"
+# DATA_DIRECTORY = "../data/Collidium"
 
-
+TEST_CONNECTION = int_func.generate_connection(DATA_DIRECTORY)
+TEST_DF = int_func.generate_table("select * from collidium_data", data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
 
 class TestGenerateConnections(unittest.TestCase):
     '''Conducts test on the performance of the generate_connections function.
@@ -85,12 +86,12 @@ class TestGenerateCategories(unittest.TestCase):
     def test_cols_needed(self):
         """Tests that invalid input raises an IndexError"""
         bad_cols_needed = ["bad_category", "base_year", "c_severity", "c_type"]
-        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed, data_directory="seattlecollision/data/Collidium") #pylint: disable=line-too-long
+        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed, data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
 
     def test_output(self):
         '''Ensures function outputs the correct lists.'''
         cols_needed = ["b_category", "base_year", "c_severity", "c_type"]
-        test_categories = int_func.generate_categories(cols_needed, data_directory="seattlecollision/data/Collidium") #pylint: disable=line-too-long
+        test_categories = int_func.generate_categories(cols_needed, data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
         true_output = (['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'], ['All', 2016, 2015, 2017, 2014, 2013], ['All', 'Property Damage Only', 'Injury', 'Serious Injury', 'Fatality'], ['All', 'Vehicle Only', 'Bike/Pedestrian']) #pylint: disable=line-too-long
         self.assertTrue(test_categories == true_output)
 
@@ -134,6 +135,42 @@ class TestGenerateTable(unittest.TestCase):
     def test_invalid_path_error(self):
         '''Tests whether an invalid path raises a ValueError exception.'''
         self.assertRaises(Exception, int_func.generate_table, 'badPath')
+
+
+SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateConnections)
+_ = unittest.TextTestRunner().run(SUITE)
+
+
+class TestBuildTypeInteract(unittest.TestCase):
+    '''Conducts test on the performance of the generate_connections function.
+
+    This class tests three functions in the interactions_functionality module.
+    These include the generate_connection function, the generate_categories
+    function and the generate_table function. The other functions in this module
+    (those ending in _interact) are not tested in this module because they generate
+    elements of the user interface that cannot be tested by unit tests.
+
+    This class conducts three tests, for the pupose of validating the functionality
+    of the interactions_functionality module. Each test is conducted within a function, as
+    follows:
+
+    Functions:
+       TO DO:
+
+    Returns: A human readable string that provides a summary of results of the five tests
+        conducted within this class.
+    '''
+    # def test_col_names(self):
+    #     '''Tests whether function output has correct column names.'''
+    #     self.assertTrue(len(list(TEST_DF)) > 0)
+
+    def filter_exception(self):
+        '''Ensures function returns output with at least 100 rows.'''
+        self.assertRaises(Exception, building_category="None", data_directory=DATA_DIRECTORY)
+
+    def test_invalid_path_error(self):
+        '''Tests whether an invalid path raises a ValueError exception.'''
+        self.assertRaises(ValueError, int_func.build_type_interact, building_category="All", data_directory='badPath') #pylint: disable=line-too-long
 
 
 SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateConnections)
