@@ -134,5 +134,5 @@ class TestGenerateTable(unittest.TestCase):
         self.assertRaises(Exception, int_func.generate_table, 'badPath')
 
 
-SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateTable)
-_ = unittest.TextTestRunner().run(SUITE)
+if __name__ == '__main__':
+    unittest.main()
