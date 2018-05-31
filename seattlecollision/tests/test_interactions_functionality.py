@@ -172,11 +172,13 @@ class TestBuildTypeInteract(unittest.TestCase):
 
     def filter_exception(self):
         '''Ensures function returns output with at least 100 rows.'''
-        self.assertRaises(Exception, building_category="None", data_directory=DATA_DIRECTORY)
+        self.assertRaises(Exception, int_func.build_type_interact, building_category="None", data_directory=DATA_DIRECTORY)
+        self.assertRaises(Exception, int_year_int_interact, building_year=2015, collision_interval=12, data_directory=DATA_DIRECTORY)
 
     def test_invalid_path_error(self):
         '''Tests whether an invalid path raises a ValueError exception.'''
         self.assertRaises(ValueError, int_func.build_type_interact, building_category="All", data_directory='badPath') #pylint: disable=line-too-long
+        self.assertRaises(ValueError, int_func.year_int_interact, building_year=2015, collision_interval=12, data_directory='badPath') #pylint: disable=line-too-long
 
 
 SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateConnections)
