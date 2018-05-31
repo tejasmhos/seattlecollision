@@ -31,11 +31,12 @@ Attributes:
 import unittest
 import pandas as pd
 import sys
-sys.path.append('../')
+sys.path.append('seattlecollision/')
+sys.path.append('seattlecollision/data')
 import draw_markers as dm
 
 
-with open('../data/Test_Data_For_Draw_Markers.csv', encoding='ascii', errors='ignore') as csvfile:
+with open('seattlecollision/data/Test_Data_For_Draw_Markers.csv', encoding='ascii', errors='ignore') as csvfile:
     TEST_DATA = pd.read_csv(csvfile)
 
 class UnitTests(unittest.TestCase):
