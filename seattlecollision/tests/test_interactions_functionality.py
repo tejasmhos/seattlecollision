@@ -6,18 +6,11 @@ TODO comolete doctrsing
 """
 import sys
 import unittest
-sys.path.append('seattlecollision/')
-sys.path.append('seattlecollsion/data')
+sys.path.append('../')
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
-<<<<<<< HEAD
 TEST_CONNECTION = int_func.generate_connection("../data/Collidium")
 TEST_DF = int_func.generate_table("select * from collidium_data", data_directory="../data/Collidium") #pylint: disable=line-too-long
-=======
-TEST_DB = int_func.generate_connection("seattlecollision/data/Collidium")
-TEST_DB.execute("select * from collidium_data")
-TEST_DF = TEST_DB.fetchall()
->>>>>>> c8f06aa5d8295f6b7522eb5cc6d4b274d05c1055
 
 
 
