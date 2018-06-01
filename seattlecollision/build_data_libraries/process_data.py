@@ -15,13 +15,16 @@ The geopy library's vincenty function is used to determine building/collision di
 Exceptions (ValueError) are raised if either of the raw data file paths are invalid.
 
 Raw Data Sources:
- - Building Permit data: (TODO: add web address)
- - Collision data: (TODO: add web address)
+ - Building Permit data: (https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data)
+ - Collision data: (https://data-seattlecitygis.opendata.arcgis.com/datasets/collisions/data)
 
 Data Processing Assumptions:
  - Collisions were restricted to 2013 and later (buildings permit data starts in 2014)
+ - Collisions involving pedestrians or cyclists were combined into a "Bike/Pedestrian" and
+ "Vehicle Only" labels
+ - Collisions were incomplete or unknown data were removed from the dataset
  - Buildings were restricted to being over $1 Million in value, to focus on large projects
- - TODO: add rest of assumptions/restrictions
+ - Buildings with complete information on all fields were included in the final dataset
 """
 from datetime import datetime
 import os
