@@ -13,8 +13,8 @@ sys.path.append('seattlecollision/tests')
 
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
-# DATA_DIRECTORY = "seattlecollision/data/Collidium"
-DATA_DIRECTORY = "../data/Collidium"
+DATA_DIRECTORY = "seattlecollision/data/Collidium"
+# DATA_DIRECTORY = "../data/Collidium"
 
 TEST_CONNECTION = int_func.generate_connection(DATA_DIRECTORY)
 TEST_DF = int_func.generate_table("select * from collidium_data", data_directory=DATA_DIRECTORY) #pylint: disable=line-too-long
