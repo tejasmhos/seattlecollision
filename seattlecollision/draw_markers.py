@@ -53,9 +53,11 @@ def create_map(data, period):
         during or after construction
 
     Returns:
-    Image of map with building locations plotted on it. The size of the
-    marker corresponds to the number of collisions that happened in the
-    period (e.g., before, during or after) identified in the inputs
+        Image of map with building locations plotted on it. The size of the
+        marker corresponds to the number of collisions that happened in the
+        period (e.g., before, during or after) identified in the inputs. If
+        the user selects filters that eliminate all buildings, an map with no
+        points is returned.
 
     Raises:
         IndexError: If a dataframe is passed to the create_map function or
@@ -72,33 +74,35 @@ def create_map(data, period):
     """
 
     true_set = set(['b_lat', 'after', 'before', 'b_id', 'b_long', 'during'])
-    if not set(list(data)) == true_set:
-        raise IndexError("Data set does not contain correct fields")
+    my_map = folium.Map(location=[47.6062, -122.3321], zoom_start=11, tiles='Mapbox Bright')
 
-    if data.shape[0] > 800:
-        raise TypeError("Please select 800 or fewer observations from dataframe.")
+    if not data.empty:
 
-    location = [np.mean(data['b_lat']), np.mean(data['b_long'])]
+        if not set(list(data)) == true_set:
+            raise IndexError("Data set does not contain correct fields")
 
-    my_map = folium.Map(location=location, zoom_start=11, tiles='Mapbox Bright')
+        if data.shape[0] > 800:
+            raise TypeError("Please select 800 or fewer observations from dataframe.")
 
-    for index, row in data.iterrows(): #pylint: disable=unused-variable
-        if row[str(period)] < row['before']:
-            fill_color = '#53c68c'
-        elif row[str(period)] > row['before']:
-            fill_color = '#ff6666'
-        else:
-            fill_color = '#809fff'
-        folium.CircleMarker(
-            location=[row['b_lat'], row['b_long']],
-            radius=row[str(period)]/20,
-            fill=True,
-            popup=str('Number of collisions: '+ str(round(row[str(period)], 0))),
-            color=fill_color,
-            control_scale=True,
-            fill_color=fill_color).add_to(my_map)
+        location = [np.mean(data['b_lat']), np.mean(data['b_long'])]
+        my_map = folium.Map(location=location, zoom_start=11, tiles='Mapbox Bright')
+
+        for index, row in data.iterrows(): #pylint: disable=unused-variable
+            if row[str(period)] < row['before']:
+                fill_color = '#53c68c'
+            elif row[str(period)] > row['before']:
+                fill_color = '#ff6666'
+            else:
+                fill_color = '#809fff'
+            folium.CircleMarker(
+                location=[row['b_lat'], row['b_long']],
+                radius=row[str(period)]/20,
+                fill=True,
+                popup=str('Number of collisions: '+ str(round(row[str(period)], 0))),
+                color=fill_color,
+                control_scale=True,
+                fill_color=fill_color).add_to(my_map)
     return my_map
-
 
 def place_maps(data):
     """
