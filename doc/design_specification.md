@@ -73,3 +73,19 @@ Use cases:
    - collidium_data table that has collision and building pairs within pre-determined radius of construction site by date, indicator for whether the collision happened before, during or after construction, number of days the collision occured during consturction window, collision type, building type, and collision severity.
 * **Outputs:** 
    - The map displayed within Jupyter notebook updates according to the number of accidents associated with the selected accident type. Three maps are presented showing collision count, one each for before, during, and after construction
+
+## 6. Use Case: Custom filter all attributes
+* **Name:** Custom filter all attributes
+* **What it does:** Allows user to adjust map view by filtering based any or all of the attributes outlined above (builidng type, base date, collision interval, radius, collision type and collision severity) The user will then be able to compare the number of accidents within the proximity of building permits before, during, and after construction. 
+* **Inputs:**
+  - The user inputs values for each of the attributes including:
+    - building type
+    - base year
+    - collision interval
+    - collision severity
+    - collision type
+    - radius from building
+  -  This could include one, all, or a subset of the accident types that are used to classify each collision.
+   - collidium_data table that has collision and building pairs within pre-determined radius of construction site by date, indicator for whether the collision happened before, during or after construction, number of days the collision occured during consturction window, collision type, building type, and collision severity.
+* **Outputs:** 
+   - The map displayed within Jupyter notebook updates according to the number of accidents associated with the selected filtering criteria. Three maps are presented showing collision count, one each for before, during, and after construction
