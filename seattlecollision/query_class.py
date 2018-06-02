@@ -147,8 +147,8 @@ class CollidiumQuery(object):
             - Default Value (set by get_qstring function):
               'SELECT b_id, b_lat, b_long, SUM(coll_before) AS before, ' +\
               'SUM(coll_during)*1.000000 AS during, SUM(coll_after) AS ' +\
-              'after FROM collidium_data WHERE radius< 1500 AND ' +\
-              'base_year = 2017 GROUP BY b_id, b_lat, b_long'
+              'after FROM collidium_data WHERE radius < 1500 AND ' +\
+              'base_year = 2016 GROUP BY b_id, b_lat, b_long'
         """
         self.__valid_c_severity = ['All', 'Fatality', 'Serious Injury', 'Injury',
                                    'Property Damage Only']

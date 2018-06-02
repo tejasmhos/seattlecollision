@@ -6,7 +6,7 @@ This module is executed at each git push, as part of our continuous
 integration design with Travis.
 
 The test_process_data.py module uses the unittest package from Python to test the
-functionality of the Collidium data processing module, comprsed of the
+functionality of the Collidium data processing module, comprised of the
 functions collision_clean, buildings_clean, and create_collidium_table.
 
 Each function is tested for appropriate errors when bad input is provided:
@@ -31,22 +31,34 @@ import unittest
 import pandas as pd
 sys.path.append('seattlecollision/build_data_libraries/')
 sys.path.append('seattlecollsion/data')
-from process_data import collisions_clean
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
 from process_data import buildings_clean
+from process_data import collisions_clean
 from process_data import create_collidium_table
 
 class TestProcessData(unittest.TestCase):
     """
-    This class includes unit tests that test the collision_clean fucntion in data_clean.py
+    Using the unit test framework, this class tests each of the imported
+    functions (buildings_clean, collisions_clean, and create_collidium_table)
+    from the process_data.py module.
 
-    Using the unit test framework, the TestCollisionCleanclass tests whether
-    the create_database function from the homework3 py module was created correctly.
-    The functions in the class include:
-    test_columnnames - tests whether the column names were generated correctly
-    test_keys - tests whether language and video_id are a key
-    test_rows - tests whether the dataset has more than 10 rows
-    test_file_path - tests whether the file path is valid
+    Each function is tested for appropriate errors when bad input is provided:
+     - test_buildings_file_path
+     - test_collisions_file_path
+     - test_collidium_inputs
 
+    Buildings and Collisions processed data should have unique keys for their
+    b_id and c_id columns, respectively. These fields are tested for duplicate
+    values:
+     - test_buildings_index
+     - test_collisions_index
+
+    Each processed DataFrame should be populated with rows. The following functions
+    check that there are at least 10 rows in each DataFrame:
+     - test_buildings_rows
+     - test_collisions_rows
+     - test_collidium_rows
     """
     def test_collisions_file_path(self):
         """
