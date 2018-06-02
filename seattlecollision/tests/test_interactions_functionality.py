@@ -185,6 +185,11 @@ class TestGenerateTable(unittest.TestCase):
             Parameters: self
             Returns: Pass if table has at least 100 rows, and fail otherwise.
 
+        test_zero_data_points: Tests that a query that eliminates all datapoints will
+            return an empty pandas dataframe
+            Parameters: self
+            Returns: Pass if query with zero rows raises RuntimeError and fail otherwise.
+
         test_invalid_path_error: Tests whether an invalid path raises a ValueError exception.
             Parameters: self
             Returns: Pass if invalid path raises a ValueError, and fail otherwise.
@@ -199,6 +204,18 @@ class TestGenerateTable(unittest.TestCase):
     def test_data_frame_size(self):
         '''Ensures function returns output with at least 100 rows.'''
         self.assertTrue(TEST_DF.shape[0] > 100)
+
+    def test_zero_data_points(self):
+        '''Tests that a query that eliminates all datapoints will return an empty dataframe'''
+        query = ("""SELECT b_id, b_lat, b_long, SUM(coll_before) AS before,
+                 SUM(coll_during)*1.000000 AS during, SUM(coll_after) AS after
+                 FROM collidium_data
+                 WHERE radius < 1500 AND base_year = 2017 AND b_category = 'INDUSTRIAL'
+                 AND c_severity = 'Fatality' AND c_type = 'Bike/Pedestrian'
+                 GROUP BY b_id, b_lat, b_long""")
+
+        empty_df = int_func.generate_table(query, data_directory=DATA_DIRECTORY)
+        self.assertTrue(empty_df.empty)
 
     def test_invalid_path_error(self):
         '''Tests whether an invalid path raises a ValueError exception.'''

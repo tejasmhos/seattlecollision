@@ -27,16 +27,16 @@ Attributes:
     TEST_DATA: This is sample input data that is used to test how whether the correct exceptions
     are raised.
 '''
-
+import sys
 import unittest
 import pandas as pd
-import sys
 sys.path.append('seattlecollision/')
 sys.path.append('seattlecollision/data')
-import draw_markers as dm
+import draw_markers as dm #pylint: disable=wrong-import-position
 
 
-with open('seattlecollision/data/Test_Data_For_Draw_Markers.csv', encoding='ascii', errors='ignore') as csvfile:
+with open('seattlecollision/data/Test_Data_For_Draw_Markers.csv',
+          encoding='ascii', errors='ignore') as csvfile:
     TEST_DATA = pd.read_csv(csvfile)
 
 class UnitTests(unittest.TestCase):
