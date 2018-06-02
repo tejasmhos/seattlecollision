@@ -10,12 +10,13 @@ within 1500 feet of each other. The two *_clean functions take the respective ra
 input and output a pandas dataframe of the processed data tables. The
 create_collidium_table_table uses each of the dataframes created in the *_clean functions
 to build a new data table of building and collision pairs within 1500 feet of each other.
-The geopy library's vincenty function is used to determine building/collision distances.
+The geopy library's distance.distance function is used to determine building/collision distances.
 
 Exceptions (ValueError) are raised if either of the raw data file paths are invalid.
 
 Raw Data Sources:
- - Building Permit data: (https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data)
+ - Building Permit data:
+ (https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data)
  - Collision data: (https://data-seattlecitygis.opendata.arcgis.com/datasets/collisions/data)
 
 Data Processing Assumptions:
@@ -28,7 +29,7 @@ Data Processing Assumptions:
 """
 from datetime import datetime
 import os
-from geopy.distance import vincenty
+from geopy.distance import distance as gpdist
 import pandas as pd
 import numpy as np
 
@@ -148,13 +149,77 @@ def buildings_clean(infile_path):
     print("Data Processing: Buildings Processing Complete. (Woohoo!)")
     return buildings
 
+def _check_collidium_inputs(collisions, buildings):
+    """
+    Helper function to check validity of collisions and buildings input pandas
+    DataFrames for create_collidium_table function.
+
+    Parameters checked:
+     - args are both of type pandas DataFrame
+     - args are both non-empty
+     - collisions input has exact (order-unspecified) columns:
+         ['c_id', 'c_long', 'c_lat', 'c_datetime', 'c_ped', 'c_cyc',
+          'c_severity_code', 'c_severity_desc', 'c_veh']
+     - buildings input has exact (order-unspecified) columns:
+         ['b_id', 'b_category', 'b_value', 'b_issue_date', 'b_final_date',
+          'b_status', 'b_lat', 'b_long']
+
+    Args:
+        collisions: a processed collisions pandas dataframe (returned by
+            collisions_clean function)
+        buildings: a processed building permit pandas dataframe (returned by
+            buildings_clean function)
+
+    Raises:
+        ValueError with appropriate messaging if any of the params are violated.
+    """
+    if not isinstance(buildings, pd.DataFrame):
+        raise ValueError("Collidium Build: buildings input should be pandas DataFrame.")
+    elif not buildings.shape[0] > 0:
+        raise ValueError("Collidium Build: buildings input has empty rows.")
+    elif not (len(list(buildings)) == 8 and
+              'b_id' in list(buildings) and
+              'b_category' in list(buildings) and
+              'b_value' in list(buildings) and
+              'b_issue_date' in list(buildings) and
+              'b_final_date' in list(buildings) and
+              'b_status' in list(buildings) and
+              'b_lat' in list(buildings) and
+              'b_long' in list(buildings)):
+        raise ValueError("Collidium Build: buildings input has extra or missing columns.")
+    else:
+        pass # buildings data meets specs
+
+    if not isinstance(collisions, pd.DataFrame):
+        raise ValueError("Collidium Build: collisions input should be pandas DataFrame.")
+    elif not collisions.shape[0] > 0:
+        raise ValueError("Collidium Build: collisions input has empty rows.")
+    elif not (len(list(collisions)) == 9 and
+              'c_id' in list(collisions) and
+              'c_long' in list(collisions) and
+              'c_lat' in list(collisions) and
+              'c_datetime' in list(collisions) and
+              'c_ped' in list(collisions) and
+              'c_cyc' in list(collisions) and
+              'c_severity_code' in list(collisions) and
+              'c_severity_desc' in list(collisions) and
+              'c_accident_type' in list(collisions)):
+        raise ValueError("Collidium Build: collisions input has extra or missing columns.")
+    else:
+        pass # collisions data meets specs
+
+    return
+
 def create_collidium_table(collisions, buildings):
     """
-    Uses geopy's vincenty distance function to calculate collision distance
+    Uses geopy's distance.distance function to calculate collision distance
     from each building site. Distance is recorded in feet.
 
     For all collisions within 1500 feet of a building site, a builing/collision
     pair is added to the radius data table.
+
+    Uses helper function _check_collidium_inputs(collisions, buildings) to
+    check inputs and raise ValueError exceptions.
 
     Args:
         collisions: a processed collisions pandas dataframe (returned by
@@ -183,15 +248,18 @@ def create_collidium_table(collisions, buildings):
             coll_during: (float) during indicator normalized to one year of exposure
             coll_after: (1 or 0) collision within 12 months after building period
             coll_days_from_build: (int) number of days between collision and build period
-			base_year: (int) the year building construction was completed
+            base_year: (int) the year building construction was completed
     """
-    rad_data = []
+    # Check Inputs with Helper Function
+    _check_collidium_inputs(collisions, buildings)
 
+    # Build Collidium Data
+    rad_data = []
     for _i, build in buildings.iterrows():
         b_loc = (build["b_lat"], build["b_long"])
         for _j, coll in collisions.iterrows():
             c_loc = (coll["c_lat"], coll["c_long"])
-            dist = vincenty(b_loc, c_loc).ft
+            dist = gpdist(b_loc, c_loc).ft
             if dist <= 1500:
                 days_from_build = 0
                 before = 0
