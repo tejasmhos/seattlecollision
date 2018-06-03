@@ -262,5 +262,40 @@ class TestQueryClass(unittest.TestCase):
                         "AND b_category IN ('COMMERCIAL', 'INDUSTRIAL') " +\
                         "GROUP BY b_id, b_lat, b_long")
 
+    def test_constr_duration(self):
+        """
+        Tests that the constructed query string matches expected value when
+        b_category is set as the string 'All'.
+
+        Returns:
+            True (bool) if the correct default query string is constructed.
+        """
+        tmp = cq.CollidiumQuery(duration=5)
+        self.assertTrue(tmp.get_qstring() == "SELECT b_id, b_lat, b_long, "+\
+                        "SUM(coll_before) AS before, SUM(coll_during)*1.000000 " +\
+                        "AS during, SUM(coll_after) AS after FROM collidium_data " +\
+                        "WHERE radius < 1500 AND base_year = 2016 " +\
+                        "AND (coll_days_from_build BETWEEN 0 AND 152 OR " +\
+                        "coll_days_from_build BETWEEN -152 AND -1) " +\
+                        "GROUP BY b_id, b_lat, b_long")
+
+    def test_set_duration(self):
+        """
+        Tests that the query string matches expected value when
+        set_b_category method gets a valid list parameter.
+
+        Returns:
+            True (bool) if the correct query string is returned.
+        """
+        tmp = cq.CollidiumQuery()
+        tmp.set_duration(5)
+        self.assertTrue(tmp.get_qstring() == "SELECT b_id, b_lat, b_long, "+\
+                        "SUM(coll_before) AS before, SUM(coll_during)*1.000000 " +\
+                        "AS during, SUM(coll_after) AS after FROM collidium_data " +\
+                        "WHERE radius < 1500 AND base_year = 2016 " +\
+                        "AND (coll_days_from_build BETWEEN 0 AND 152 OR " +\
+                        "coll_days_from_build BETWEEN -152 AND -1) " +\
+                        "GROUP BY b_id, b_lat, b_long")
+
 if __name__ == '__main__':
     unittest.main()
