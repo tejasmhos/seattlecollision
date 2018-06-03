@@ -188,6 +188,8 @@ class CollidiumQuery(object):
           AttributeError if invalid arg is provided
         """
         if isinstance(arg, list):
+            if not all([x in valid_args for x in arg]):
+                raise AttributeError("%s list contains invalid values." % label)
             return "AND %s IN %s " % (label, tuple(arg).__str__())
         elif arg == "All":
             return ''
