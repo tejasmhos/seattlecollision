@@ -272,7 +272,7 @@ class TestQueryClass(unittest.TestCase):
         """
         tmp = cq.CollidiumQuery(duration=5)
         self.assertTrue(tmp.get_qstring() == "SELECT b_id, b_lat, b_long, "+\
-                        "SUM(coll_before) AS before, SUM(coll_during)*1.000000 " +\
+                        "SUM(coll_before) AS before, SUM(coll_during)*0.416667 " +\
                         "AS during, SUM(coll_after) AS after FROM collidium_data " +\
                         "WHERE radius < 1500 AND base_year = 2016 " +\
                         "AND (coll_days_from_build BETWEEN 0 AND 152 OR " +\
@@ -290,7 +290,7 @@ class TestQueryClass(unittest.TestCase):
         tmp = cq.CollidiumQuery()
         tmp.set_duration(5)
         self.assertTrue(tmp.get_qstring() == "SELECT b_id, b_lat, b_long, "+\
-                        "SUM(coll_before) AS before, SUM(coll_during)*1.000000 " +\
+                        "SUM(coll_before) AS before, SUM(coll_during)*0.416667 " +\
                         "AS during, SUM(coll_after) AS after FROM collidium_data " +\
                         "WHERE radius < 1500 AND base_year = 2016 " +\
                         "AND (coll_days_from_build BETWEEN 0 AND 152 OR " +\
