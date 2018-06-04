@@ -56,10 +56,26 @@ To operate the Collidium jupyter notebook, follow the steps below:
 2. Run the setup files to install the dependencies for running the notebook.
  ``` python setup.py install ```
  3. To ensure the installations have been installed correctly. Install the elements in the package requirements.
+=======
+## Data Sources
 
- ``` pip install -r requirements.txt```
- 
- 4. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
+We use two main data sources. One of our data sources is the Building Permit Dataset, which we took from the Seattle Open Data portal. This data is from 2014 - 2018. Our final cleaned dataset is 440 rows.
+
+Our second dataset is the Collisions dataset. This dataset has collisions from 2003 - 2018.  The final cleaned dataset has 60,000 rows.
+
+We take both these datasets and create a dataset called Collidium. We calculate the distance between collisions and buildings and join collisions that occur within 1500 ft and 1 year of building permit. This dataset helps us reduce the complexity of our queries.
+
+## Installation
+
+To operate the Collidium jupyter notebook, follow the steps below:
+1. Clone the respository onto your machine
+2. Run the setup files to install the dependencies for running the notebook.
+``` python setup.py install ```
+3. To ensure the installations have been installed correctly. Install the elements in the package requirements.
+
+``` pip install -r requirements.txt```
+
+4. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
  
  ## Project History
  
@@ -71,3 +87,25 @@ To operate the Collidium jupyter notebook, follow the steps below:
  ## Acknowledgements
  
  Collidium was developed for a class project in Spring 2018 for the Data 515A - Software Engineering for Data Scientists course at University of Washington. Many thanks to instrcutors David A. C. Beck and Joseph L. Hellerstein for their insight and guidance throughout project development.
+
+
+## How to Use
+
+After pulling and running the setup script, the project can be executed by opening the Collidium.ipynb notebook. All tools and functionality is integrated into this notebook. No other application need to be opened.
+
+## Contributors
+
+There are 4 primary contributors to this project. They are:
+
+- Alyssa Goodrich
+- Dan White
+- Ian Kirkman 
+- Tejas Hosangadi
+
+## Acknowledgements
+
+A thanks to our DATA 515 course professors, Joe Hellerstein and Dave Beck, of the University of Washington eScience Institute, for there guidance and assistance that they gave us during the course of the project. 
+
+## License
+
+This project is licensed under the MIT license.
