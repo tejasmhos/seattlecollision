@@ -10,25 +10,22 @@ python package, and the processed data will be condtained in a database called C
 ## Components
 
 The components that we will be using for the project are listed below:
+## table_builder TODO
+- **Name:**
+- **What it does:**
+- **Inputs**
+- **Outputs**:
+- **How it interacts with other components:**
 
 
-## draw_markers
+## process_data TODO
+- **Name:**
+- **What it does:**
+- **Inputs**
+- **Outputs**:
+- **How it interacts with other components:**
 
-- **Name:** draw_markera
-
-- **What it does:** Component is used to place markers on the map that correspond to building location and the count of collisions that occured before, during and after construction of the building. 
-
-- **Inputs:**
-  -  Collidium database that includes data for collision and building pairs within 1500 foot radius of construction site. Fields include by construction begin date, construction end date, collision date, base year, indicator for whether the collision happened before, during or after construction, number of days the collision occured from construction window, collision type, building type, and collision severity.
-  -  Query_class, which is a class that creates SQL query that can be used to query database
-  -  draw_markers component, is a function that takes 
-- **Outputs:** 
-- Three map objects with building permits plotted on it, with volume of collisions codified by size and change in volume of collisions relative to preconstruction period codified by color. The three maps correspond to collision count before construction, during construction and after construction.
-
-- **How it interacts with other components:** Recieves database created in Recieves query created in the "build\_query" component. Builds maps using the draw_markers component and visualizes maps in the UI component
-
-
-## build_query
+## query_class TODO
 
 - **Name:** build_query
 - **What it does:** It filters a table using an SQL query based on the selectors from the sliders or radio buttons.
@@ -37,93 +34,53 @@ The components that we will be using for the project are listed below:
 
 - **Outputs:**  A table with the same fields as input table, but filtered with the required specifications as selected with sliders/radio buttons
 
-- **How it interacts with other components:** The table created in the build\_query function is used as input in the draw_markers component. Also, the options selected in build\_query are based on the options created in the build\_ui component. 
+- **How it interacts with other components:** The table created in the build\_query function is used as input in the draw_markers component. Also, the options selected in build\_query are based on the options created in the Collidium.ipynb component.
 
-## build_ui
-- **Name:** build_ui
-- **What it does:** This component is used to construct our user interface that we use to visualize our data, including building interactivity, as well as placing output maps in a side by side orientation.
+## draw_markers
 
-- **Inputs:** Interactivity options selected by developers for interactivity element, and map objects created in draw_markers component for the map drawing component.
+- **Name:** draw_markers
 
-- **Outputs:** Three maps are constructed by our component, one for each time period corresponding to before construction, during construction and after construction. The layout of these maps, along with the interaction widgets are all constructed by this component.
+- **What it does:** This component takes a data set and uses its information to draw three maps, and place markers on them. The maps shwo the city of Seattle and the markers represent the location of new building construction. The the size of the marker corresponds to the number of collisions that happened in the period before, during or after the construction period. 
 
-- **How it interacts with other components:** This components has two parts, one that collects user input and one that draws output for the user to see. The UI built by this component is used to create inputs in the build\_query component; the maps drawn by this component are created in the draw\_markers component. 
+- **Inputs:** This module takes as input a Pandas dataframe with the following fields:
+  - Data: a dataframe that contains the following fields:
+    - b_id (int): buiding id number (key)
+    - b_lat (float): latitude of building
+    - b_long (float): longitude of building
+    - before (int): Number of collisions that happend in period prior to construction
+    - during (int): Number of collisions that happend in period during construction
+    - after (int): Number of collisions that happend in period after construction.
+- 
+- **Outputs:** Three map objects place side by side. Each of the three maps will show a map of the city of Seattle with points plotted to show the location of buildings constructed in the selected time period. The size of the point will indicate the number of collisions that occured near the building. The color of the points corresponds to whether the number of collisions represents an increase from the before construction period (red) or a decrease relative to the before construction period (green) or same as the preconstruction period (blue). The left most map will show the number of collisions prior to construction, the middle map will show the number of collisions during construction and the right most map will show the number of collisions that occured after construction.
 
-## build\_date\_query
+- **How it interacts with other components:** This module interacts with many other modules as follows:
+  + *interactions_functionality*: The draw\_markerss module is executed within the interactions\_functionality module. 
+  + *Collidium.ipynb*: The maps that are generated by the draw_markers module are displayed in the Collidium.ipynb notebook. 
 
-- **Name:** build\_date\_query
+## interact_functionality:
+- **Name:** interact_functionality
+- **What it does:** This module sets up functions that enable the users to  select filtering criteria for which buildings and collisions should be displayed on a map. These functions are then executed using the ipywidgets interactive functionality within a jupyter notebook environement. This work is done by six functions that end in *\_interact in this module. These functions allow users to choose criteria to filter on, then write a query using the query\_class. The dataframe that results from the query is stored in a Pandas dataframe and then mapped using the draw_markers module. In addition to the *\_interact functions, this module includes three set up functions that aid in streamlining the interact functions. These fucntions have the following purpose: generate\_connection: generates a connection to an SQLite3 database, generate\_categories lists the filter options for various categories, and generate_table function transforms an SQLite3 database table into a pandas dataframe. 
+- **Inputs:**
+  -  data_directory: Path to data directory where Collidium database is located. Collidium database includes data for collision and building pairs within 1500 foot radius of construction site. Fields include by construction begin date, construction end date, collision date, base year (year of construction completeion), indicator for whether the collision happened before, during or after construction, number of days the collision occured from construction window, collision type, building type, and collision severity.
+  -  query_class: The query class is used within this module to develop a query that extracts the data from the Collium database that is used to populate the maps
+  -  draw_markers: The draw markers module is used within this module to draw the maps based on the data that is extracted from the Collidium database using the query class. The maps are displayed in the Jupyter notebook environment.
+  -  User inputs: The *\_interact* functions each allow user to enter input to filter the data.   These options include: building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), and radius_from_building (int).
 
-- **What it Does:** The construction of the query that handles time periods (the before, during and after) is performed by this component.
+- **Outputs:** 
+- The *\_interact functions each output three map objects with building permits plotted on it, with volume of collisions codified by size and change in volume of collisions relative to preconstruction period codified by color. The three maps correspond to collision count before construction, during construction and after construction. These are intended to be run in a jupyter notebook environment. 
 
-- **Inputs:** A date, that is in the form of a string.
+- **How it interacts with other components:** This component uses database created in by the process_data and table_builder modules. Recieves query created in the "build\_query" component and uses it to query database. Builds maps using the draw_markers component and visualizes maps in the UI component 
 
-- **Outputs:** Three different periods, before, during and after, in the form of dates.
+## Collidium.ipynb
+- **Name:** Collidium.ipynb
+- **What it does:** This component is used as our user interface. It imports the modules outlined above and collects input from the user using ipywidgets interact functionality. Once the user has completed their interaction it runs the modules and creates map visualizations. 
+
+- **Inputs:**  User inputs: Each use case allows users to select an option frm a drop down menu in the user interface. These include:  building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), and radius_from_building (int).
+
+- **Outputs:** Three maps are visualized for each use case
+
+- **How it interacts with other components:** Collidium.ipynb accesses the database created in by the process_data and table_builder modules. It runs the functions that were developed in the interactions_functionality functions, which runs the query created using the "build\_query" component to structure the data to run the draw_markers module.  
+
 
   
 
-## Interactions
-
-We detail some sample interaction scenarios in this section. 
-
-### Setting a Date Range
-
-**Pseudo code:**
-
-- Set constr\_start and constr_end from jupyter input slider.
-- Calculate constr\_dur, the duration of the construction task to be normalized.
-- Set before\_start date as the constr\_start minus the data\_dur selected in the jupyter radio button.
-- Set after\_end date as the constr\_end plus the data\_dur selected in the jupyter radio button.
-- Query all construction sites from the derived construction database that were started and completed within the (constr\_start, constr\_end) time frame. Set sites to display\_sites.
-- Query the collision counts in the pre-defined radius for each site in display\_sites in the following time frames:
-  - before\_ct: (before\_start, constr\_start)
-  - during\_ct: (constr\_start, constr\_end)
-  - after\_ct: (constr\_end, after\_end)
-- Normalize the during\_ct so it reflects the same time period as before and after: 
-  - during\_ct_normalized = during\_ct * constr_dur / data\_dur
-- Update map display:
-  - Display only construction sites in display\_sites.
-  - Use updated before\_ct, during\_ct\_normalized, and after\_ct for map data views.
-  - Allow user to re-adjust jupyter settings and repeat process with new inputs.
-
-### Toggling a Permit Type
-
-**Pseudo code:**
-
-- Field\_selection = field selection identified in toggle
-- Value\_selection = value selection identified in toggle
-- Using pandas filter the permit data base based on field\_selection and value_selection 
-- Take the resulting permit ID column as a vector and filter the Radius database based on those permit IDs
-- Feed new data into map for automatic update
-- Return updated map
-
-### Selecting a Radius Size
-
-**Pseudocode:**
-
-- Read the radius size that is set by the user.
-  - The radius size is a string that specifies small, medium and large.
-  - This radius size is converted into a number that is passed on to the query.
-- Generate a query in SQL that performs a search on the Radius DB
-  - Take the returned size from the Jupyter slider.
-  - Pass this query back to the SQL backend.
-- Execute the query on the Radius DB, and collect the returned results. 
-  - Process the returned tuples and perform a computation that determines whether a point needs to be added or removed.
-- Perform an update of the map displays, so that they reflect
-
-### Toggling Accident Severity
-
-**Pseudo code:**
-
-- Receive accident severity input levels selected by user via the interactive feature on the map
-- Using pandas, filter the Collisions database with the severity code column based on the user input. 
-- Take the resulting Collision ID column as a vector and filter the Radius database based on those collision IDs
-- Feed new data into map for automatic update.
-
-### Toggling Accident Type
-
-**Pseudo code:**
-
-- Receive accident type selected by user via the interactive feature on the map[
-- Using pandas, filter the Collisions database with the accident type column based on the user input. 
-- Take the resulting Collision ID column as a vector and filter the Radius database based on those collision IDs
-- Feed new data into map for automatic update.
