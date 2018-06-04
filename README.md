@@ -53,6 +53,27 @@ seattlecollision/
 
 To install run 
  ``` pip install -r requirements.txt```
- 
+
  Setup
  ``` python setup.py install ```
+
+## How to Use
+
+After pulling and running the setup script, the project can be executed by opening the Collidium.ipynb notebook. All tools and functionality is integrated into this notebook. No other application need to be opened.
+
+## Contributors
+
+There are 4 primary contributors to this project. They are:
+
+- Alyssa Goodrich
+- Dan White
+- Ian Kirkman 
+- Tejas Hosangadi
+
+## Acknowledgements
+
+A thanks to our DATA 515 course professors, Joe Hellerstein and Dave Beck, of the University of Washington eScience Institute, for there guidance and assistance that they gave us during the course of the project. 
+
+## License
+
+This project is licensed under the MIT license.
