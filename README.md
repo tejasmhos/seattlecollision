@@ -49,3 +49,10 @@ seattlecollision/
 	|- collidium_env.yml
 	|- requirements.txt		
 ```
+## Installation
+
+To install run 
+ ``` pip install -r requirements.txt```
+ 
+ Setup
+ ``` python setup.py install ```
