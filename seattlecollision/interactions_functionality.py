@@ -314,7 +314,9 @@ def radius_interact(radius_from_building, data_directory="data/Collidium"):
     mapping_data = generate_table(whole_query, data_directory)
     return draw_markers.place_maps(mapping_data)
 
-def all_factor_interact(building_category, building_year, collision_interval, collision_severity, collision_type, radius_from_building, data_directory="data/Collidium"): #pylint: disable=line-too-long,too-many-arguments
+def all_factor_interact(building_category, building_year, collision_interval, #pylint: disable=too-many-arguments
+                        collision_severity, collision_type, radius_from_building,
+                        data_directory="data/Collidium"):
     """
     Queries database and returns maps based on proximity of collisions to building site
 
