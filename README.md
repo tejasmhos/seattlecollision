@@ -49,10 +49,25 @@ seattlecollision/
 	|- collidium_env.yml
 	|- requirements.txt		
 ```
-## Installation
+## Installations
 
-To install run 
+To operate the Collidium jupyter notebook, follow the steps below:
+1. Clone the respository onto your machine
+2. Run the setup files to install the dependencies for running the notebook.
+ ``` python setup.py install ```
+ 3. To ensure the installations have been installed correctly. Install the elements in the package requirements.
+
  ``` pip install -r requirements.txt```
  
- Setup
- ``` python setup.py install ```
+ 4. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
+ 
+ ## Project History
+ 
+ 
+ 
+ ## Data
+ The data sourced for Collidium was taken from the [Seattle Open Data Portal](https://data.seattle.gov/). The tool uses processed versions of the [Building Permits](https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data) dataset and [Collisions](https://data-seattlecitygis.opendata.arcgis.com/datasets/collisions/data) dataset. The processed datasets were aggregated into a database which provides the underlying data for the Collidium notebook.
+ 
+ ## Acknowledgements
+ 
+ Collidium was developed for a class project in Spring 2018 for the Data 515A - Software Engineering for Data Scientists course at University of Washington. Many thanks to instrcutors David A. C. Beck and Joseph L. Hellerstein for their insight and guidance throughout project development.
