@@ -49,6 +49,14 @@ seattlecollision/
 	|- collidium_env.yml
 	|- requirements.txt		
 ```
+## Data Sources
+
+We use two main data sources. One of our data sources is the Building Permit Dataset, which we took from the Seattle Open Data portal. This data is from 2014 - 2018. Our final cleaned dataset is 440 rows.
+
+Our second dataset is the Collisions dataset. This dataset has collisions from 2003 - 2018.  The final cleaned dataset has 60,000 rows.
+
+We take both these datasets and create a dataset called Collidium. We calculate the distance between collisions and buildings and join collisions that occur within 1500 ft and 1 year of building permit. This dataset helps us reduce the complexity of our queries.
+
 ## Installation
 
 To install run 
