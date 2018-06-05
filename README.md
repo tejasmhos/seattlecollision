@@ -71,9 +71,7 @@ After installing the requirements, the project can be executed by opening the Co
  These processed datasets were aggregated into a database which provides the underlying data for the Collidium notebook. We calculate the distance between collisions and buildings and join collisions that occur within 1500 ft and 1 year of building permit. This database helps us reduce the complexity of our queries.
  
  ## Project History
- TO DO
- 
- 
+This project was inspired our team's observation that new building construction in Seattle is sometimes not accompanied by corresponding transportation infrastructure. We conducted this analysis to see if there is a visible difference in the number of collisions during and after construction, as compared to the period before construction. This project can be used by community activists, city planners and municipal politicians to help guide their decisions and agendas. 
  
  ## Acknowledgements
  
