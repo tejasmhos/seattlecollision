@@ -40,8 +40,10 @@ seattlecollision/
 		|- Tech Review Presentation.pdf
 		|- finalpresentation.pdf
 		|- functionaldesign.md
-	|- tutorial/
-		|- placeholder.py
+		|- Component_design.md
+		|- project_structure.png
+	|- examples/
+		|- Shortcut to Collidium Notebook.md
 	|- .coveragerc
 	|- .travis.yml
 	|- LICENSE
