@@ -9,7 +9,12 @@ python package, and the processed data will be condtained in a database called C
 
 ## Components
 
-The components that we will be using for the project are listed below:
+The interactions between the components that make up the Collidium project are depicted in the flowchart below.
+
+![](project_structure.png)
+
+
+A full description of each of these components is provided below:
 
 ## process_data
 - **Name:** process_data
