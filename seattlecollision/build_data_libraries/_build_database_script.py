@@ -12,7 +12,7 @@ execute this script.
 Infile/outfile constants are set immediately after the import
 statements.
 """
-
+#pylint: disable=import-error
 import process_data
 from table_builder import create_table
 
