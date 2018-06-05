@@ -9,32 +9,47 @@ python package, and the processed data will be condtained in a database called C
 
 ## Components
 
-The components that we will be using for the project are listed below:
-## table_builder TODO
-- **Name:**
-- **What it does:**
-- **Inputs**
-- **Outputs**:
-- **How it interacts with other components:**
+The interactions between the components that make up the Collidium project are depicted in the flowchart below.
+
+![](project_structure.png)
 
 
-## process_data TODO
-- **Name:**
-- **What it does:**
-- **Inputs**
-- **Outputs**:
-- **How it interacts with other components:**
+A full description of each of these components is provided below:
 
-## query_class TODO
+## process_data
+- **Name:** process_data
+- **What it does:** Cleans and processes the raw data files. Runs geopy to link building permit and collision observations based on the their distance (within 1500 ft) and occurrence (within one year of start or end of building permit)
+- **Inputs** The inputs are the raw_building_input.csv file and the raw_collision_input.csv file which are downloaded directly from the Seattle Open Data portal
+- **Outputs**: The output is three .csv files which include the collisions.csv, buildings.csv, and collidium_data.csv. 
+- **How it interacts with other components:** The process_data module is the first module called when building the database. The collidium_data.csv output file is a direct input into the table_builder module.
 
-- **Name:** build_query
-- **What it does:** It filters a table using an SQL query based on the selectors from the sliders or radio buttons.
+## table_builder
+- **Name:** table_builder
+- **What it does:** It takes the processed collidium_data.csv file and creates the Collidium database, preserving the data types from each column. 
+- **Inputs** The input is the collidium_data.csv file produced by the process_data module.
+- **Outputs**: The Collidium.db database file containing the linked building permit and collision observations.
+- **How it interacts with other components:** The table_builder module takes the collidium_data.csv output from the process_data module. The output file (Collidium.db) is called by the interact_functionality.py module to update the maps in the Collidium.ipynb notebook.
 
-- **Inputs:** The values from the sliders (integer and float based.), a table including Lat/Lon, building type, radius size, collision type, date
 
-- **Outputs:**  A table with the same fields as input table, but filtered with the required specifications as selected with sliders/radio buttons
+## CollidiumQuery (from query_class)
 
-- **How it interacts with other components:** The table created in the build\_query function is used as input in the draw_markers component. Also, the options selected in build\_query are based on the options created in the Collidium.ipynb component.
+- **Name:** CollidiumQuery
+- **What it does:** It stores user widget inputs as class variables, and constructs a sqlite query string from those attributes. The query string is designed to interact with the collidium_data table on the Collidium sqlite database, in order to pull before, during, and after collision counts for all collisions meeting the CollidiumQuery's attribute parameters at each building.
+
+- **Inputs:** Both the class constructor and individual `set_attribute` class methods take valid attribute input as arguments to set attributes. The only attribute without a set function is the query string, `qstring`. The following inputs/types/values are valid:
+
+| Argument Name | Description                                                       | Default Value | Valid Types                      | Valid Values                                                                                  |
+|---------------|-------------------------------------------------------------------|---------------|----------------------------------|-----------------------------------------------------------------------------------------------|
+| b_category    | Building category                                                 | 'All'         | list or single element as string | ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'] |
+| radius        | Distance between building and collision site                      | 1500          | int                              | (0, 1500]                                                                                     |
+| base_year     | Year of building completion date                                  | 2016          | int                              | 2014 - 2017                                                                                   |
+| duration      | Months to count collisions before and after building construction | 12            | int                              | (0, 12]                                                                                       |
+| c_severity    | Accident severity                                                 | 'All'         | list or single element as string | ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only']                       |
+| c_type        | Accident Type                                                     |  'All'        | list or single element as string | ['All', 'Vehicle Only', 'Bike/Pedestrian']                                                    |
+
+- **Outputs:**  Class method `get_qstring` constructs and returns a sqlite query string designed to pull before, during, and after collision counts meeting the class attribute value parameters from the collidium_data table on the sqlite Collidium database.
+
+- **How it interacts with other components:** The `interactions_functionality.py` module creates a CollidiumQuery instance, and modifies the class attributes as the user makes interactive selections in the front-end Jupyter notebook. The `interactions_functionality.py` module requests the query string whenever it is needed to pull data results for a map update.
 
 ## draw_markers
 
@@ -50,14 +65,14 @@ The components that we will be using for the project are listed below:
     - before (int): Number of collisions that happend in period prior to construction
     - during (int): Number of collisions that happend in period during construction
     - after (int): Number of collisions that happend in period after construction.
-- 
+
 - **Outputs:** Three map objects place side by side. Each of the three maps will show a map of the city of Seattle with points plotted to show the location of buildings constructed in the selected time period. The size of the point will indicate the number of collisions that occured near the building. The color of the points corresponds to whether the number of collisions represents an increase from the before construction period (red) or a decrease relative to the before construction period (green) or same as the preconstruction period (blue). The left most map will show the number of collisions prior to construction, the middle map will show the number of collisions during construction and the right most map will show the number of collisions that occured after construction.
 
 - **How it interacts with other components:** This module interacts with many other modules as follows:
   + *interactions_functionality*: The draw\_markerss module is executed within the interactions\_functionality module. 
   + *Collidium.ipynb*: The maps that are generated by the draw_markers module are displayed in the Collidium.ipynb notebook. 
 
-## interact_functionality:
+## interact_functionality
 - **Name:** interact_functionality
 - **What it does:** This module sets up functions that enable the users to  select filtering criteria for which buildings and collisions should be displayed on a map. These functions are then executed using the ipywidgets interactive functionality within a jupyter notebook environement. This work is done by six functions that end in *\_interact in this module. These functions allow users to choose criteria to filter on, then write a query using the query\_class. The dataframe that results from the query is stored in a Pandas dataframe and then mapped using the draw_markers module. In addition to the *\_interact functions, this module includes three set up functions that aid in streamlining the interact functions. These fucntions have the following purpose: generate\_connection: generates a connection to an SQLite3 database, generate\_categories lists the filter options for various categories, and generate_table function transforms an SQLite3 database table into a pandas dataframe. 
 - **Inputs:**

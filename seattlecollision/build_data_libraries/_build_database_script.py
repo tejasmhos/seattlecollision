@@ -1,9 +1,16 @@
 """
-TODO
+COLLIDIUM
 
-Infile/outfile constants are set immediately after the import statements in this module. A
-short script is run at the EOF to build each of the required processed dataframes and output
-them to the specified locations in csv format.
+This module contains a python script to process raw data and
+build the Collidium sqlite database.
+
+NOTE: This takes significant time to execute. However,
+the completed database is included in the git repository and
+unpackaged by the setup.py, so it should be unnecessary to
+execute this script.
+
+Infile/outfile constants are set immediately after the import
+statements.
 """
 
 import process_data
