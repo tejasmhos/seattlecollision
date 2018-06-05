@@ -12,13 +12,39 @@ CollidiumQuery object constructor, class methods set_* to set each attribute
 and static method __dynamic_substring__, which is a helper function for
 attributes that allow dynamic (list or string) types.
 
-Each function is tested for appropriate errors when bad input is provided:
- - TODO update bad input function list
+Each attribute is tested for appropriate errors when bad input is provided
+to the constructor:
+ - test_bad_attr_constr_b_category_constr_b_category: tests bad constructor input for b_category
+ - test_bad_attr_constr_radius: tests bad constructor input for radius
+ - test_bad_attr_constr_base_year: tests bad constructor input for base_year
+ - test_bad_attr_constr_duration: tests bad constructor input for duration
+ - test_bad_attr_constr_c_severity: tests bad constructor input for c_severity
+ - test_bad_attr_constr_c_type: tests bad constructor input for c_type
+
+Each arg is test for appropriate errors when using a set_attribute class
+method:
+ - test_bad_arg_set_b_category: tests bad set_b_category() input
+ - test_bad_arg_set_radius: tests bad set_radius() input
+ - test_bad_arg_set_base_year: tests bad set_base_year() input
+ - test_bad_arg_set_duration: tests bad set_duration() input
+ - test_bad_arg_set_c_severity: tests bad set_c_severity() input
+ - test_bad_arg_set_c_type: tests bad set_c_type() input
 
 Examples are tested against expected query strings when appropriate input
 is provided:
- - test_default_qstring
- - TODO update expected output examples
+ - test_default_qstring: tests for expected default query string
+ - test_constr_b_category_str: tests for expected query string output
+   when valid b_category (as string) is set by constructor
+ - test_constr_b_category_list: tests for expected query string output
+   when valid b_category (as list) is set by constructor
+ - test_constr_duration: tests for expected query string output
+   when valid duration is set by constructor
+ - test_set_b_category_str: tests for expected query string output
+   when valid b_category (as string) is arg for set_b_category()
+ - test_set_b_category_list: tests for expected query string output
+   when valid b_category (as list) is arg for set_b_category()
+ - test_set_duration: tests for expected query string output
+   when valid duration is arg for set_duration()
 """
 import sys
 import unittest
@@ -29,7 +55,10 @@ import query_class as cq
 
 class TestQueryClass(unittest.TestCase):
     """
-    Using the unit test framework, the TODO
+    Using the unit test framework, CollidiumQuery object constructors
+    and class methods are tested with various bad input, as well as
+    checking the default query string and expected query string after
+    attribute modification.
     """
     def test_bad_attr_constr_b_category(self):
         """
@@ -165,21 +194,6 @@ class TestQueryClass(unittest.TestCase):
                         "WHERE radius < 1500 AND base_year = 2016 GROUP BY " +\
                         "b_id, b_lat, b_long")
 
-    def test_constr_b_category_all(self):
-        """
-        Tests that the constructed query string matches expected value when
-        b_category is set as the string 'All'.
-
-        Returns:
-            True (bool) if the correct default query string is constructed.
-        """
-        tmp = cq.CollidiumQuery(b_category='All')
-        self.assertTrue(tmp.get_qstring() == "SELECT b_id, b_lat, b_long, "+\
-                        "SUM(coll_before) AS before, SUM(coll_during)*1.000000 " +\
-                        "AS during, SUM(coll_after) AS after FROM collidium_data " +\
-                        "WHERE radius < 1500 AND base_year = 2016 GROUP BY " +\
-                        "b_id, b_lat, b_long")
-
     def test_constr_b_category_str(self):
         """
         Tests that the constructed query string matches expected value when
@@ -211,22 +225,6 @@ class TestQueryClass(unittest.TestCase):
                         "WHERE radius < 1500 AND base_year = 2016 " +\
                         "AND b_category IN ('COMMERCIAL', 'INDUSTRIAL') " +\
                         "GROUP BY b_id, b_lat, b_long")
-
-    def test_set_b_category_all(self):
-        """
-        Tests that the query string matches expected value when
-        set_b_category method gets param 'All'.
-
-        Returns:
-            True (bool) if the correct query string is returned.
-        """
-        tmp = cq.CollidiumQuery()
-        tmp.set_b_category('All')
-        self.assertTrue(tmp.get_qstring() == "SELECT b_id, b_lat, b_long, "+\
-                        "SUM(coll_before) AS before, SUM(coll_during)*1.000000 " +\
-                        "AS during, SUM(coll_after) AS after FROM collidium_data " +\
-                        "WHERE radius < 1500 AND base_year = 2016 GROUP BY " +\
-                        "b_id, b_lat, b_long")
 
     def test_set_b_category_str(self):
         """

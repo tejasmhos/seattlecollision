@@ -59,8 +59,9 @@ sys.path.append('../')
 sys.path.append('seattlecollision/')
 sys.path.append('seattlecollision/data')
 sys.path.append('seattlecollision/tests')
-
-import interactions_functionality as int_func #pylint: disable=wrong-import-position
+#pylint: disable=import-error
+#pylint: disable=wrong-import-position
+import interactions_functionality as int_func
 
 DATA_DIRECTORY = "seattlecollision/data/Collidium" # Select if running on Travis, else comment out
 # DATA_DIRECTORY = "../data/Collidium" # Select this if running on local machine, else comment out.

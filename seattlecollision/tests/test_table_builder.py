@@ -8,6 +8,8 @@ import sys
 from io import StringIO
 sys.path.append('seattlecollision/build_data_libraries/')
 sys.path.append('seattlecollision/data')
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
 import table_builder
 
 
@@ -46,15 +48,13 @@ class TestTableBuilder(unittest.TestCase):
         :param: self
         :return pass if correct message is printed, fail otherwise
         """
-        saved_stdout = sys.stdout
+        _saved_stdout = sys.stdout
         out = StringIO()
         sys.stdout = out
-        table_builder.create_table('seattlecollision/data/test_db_for_unittest.db','seattlecollision/data/collidium_data.csv')
+        table_builder.create_table('seattlecollision/data/test_db_for_unittest.db',
+                                   'seattlecollision/data/collidium_data.csv')
         output = out.getvalue().strip()
         self.assertEqual(output, 'Dataprocessing: sqlite database constructed. (Woohoo!)')
-    	
-    
-
 
 if __name__ == '__main__':
     unittest.main()

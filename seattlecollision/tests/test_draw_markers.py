@@ -32,10 +32,9 @@ import unittest
 import pandas as pd
 sys.path.append('seattlecollision/')
 sys.path.append('seattlecollision/data')
-
-
-
-import draw_markers as dm #pylint: disable=wrong-import-position
+#pylint: disable=import-error
+#pylint: disable=wrong-import-position
+import draw_markers as dm
 
 
 with open('seattlecollision/data/Test_Data_For_Draw_Markers.csv',
