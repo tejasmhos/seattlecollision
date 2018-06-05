@@ -38,14 +38,12 @@ A full description of each of these components is provided below:
 
 - **Inputs:** Both the class constructor and individual `set_attribute` class methods take valid attribute input as arguments to set attributes. The only attribute without a set function is the query string, `qstring`. The following inputs/types/values are valid:
 
-| Argument Name | Description                                                       | Default Value | Valid Types                      | Valid Values                                                                                  |
-|---------------|-------------------------------------------------------------------|---------------|----------------------------------|-----------------------------------------------------------------------------------------------|
-| b_category    | Building category                                                 | 'All'         | list or single element as string | ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'] |
-| radius        | Distance between building and collision site                      | 1500          | int                              | (0, 1500]                                                                                     |
-| base_year     | Year of building completion date                                  | 2016          | int                              | 2014 - 2017                                                                                   |
-| duration      | Months to count collisions before and after building construction | 12            | int                              | (0, 12]                                                                                       |
-| c_severity    | Accident severity                                                 | 'All'         | list or single element as string | ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only']                       |
-| c_type        | Accident Type                                                     |  'All'        | list or single element as string | ['All', 'Vehicle Only', 'Bike/Pedestrian']                                                    |
+  - b_category (list or string): Building category; list or single element as string from ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'], default: 'All'
+  - radius (int): Distance between building and collision site; [0, 1500), default: 1500
+  - base_year (int): Year of building completion date; [2014, 2017], default: 2016
+  - duration (int): Months to count collisions before and after building construction; [0, 12], default: 12
+  - c_severity (list or string): Accident severity; list or single element as string from ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only'], default: 'All'
+  - c_type (list or string): Accident type; list or single element as string from ['All', 'Vehicle Only', 'Bike/Pedestrian'], default: 'All'
 
 - **Outputs:**  Class method `get_qstring` constructs and returns a sqlite query string designed to pull before, during, and after collision counts meeting the class attribute value parameters from the collidium_data table on the sqlite Collidium database.
 
