@@ -83,9 +83,9 @@ A full description of each of these components is provided below:
   -  User inputs: The *\_interact* functions each allow user to enter input to filter the data.   These options include: building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), radius_from_building (int), and map_detail(str): Allows user to indicate if they prefer a map style with low detail or high detail.
 
 - **Outputs:** 
-- The *\_interact functions each output three map objects with building permits plotted on it, with volume of collisions codified by size and change in volume of collisions relative to preconstruction period codified by color. The three maps correspond to collision count before construction, during construction and after construction. These are intended to be run in a jupyter notebook environment. 
+  - The *\_interact functions each output three map objects with building permits plotted on it, with volume of collisions codified by size and change in volume of collisions relative to preconstruction period codified by color. The three maps correspond to collision count before construction, during construction and after construction. These are intended to be run in a jupyter notebook environment. 
 
-- **How it interacts with other components:** This component uses database created in by the process_data and table_builder modules. Recieves query created in the "build\_query" component and uses it to query database. Builds maps using the draw_markers component and visualizes maps in the UI component 
+  - **How it interacts with other components:** This component uses database created in by the process_data and table_builder modules. Recieves query created in the "build\_query" component and uses it to query database. Builds maps using the draw_markers component and visualizes maps in the UI component 
 
 ## Collidium.ipynb
 - **Name:** Collidium.ipynb
