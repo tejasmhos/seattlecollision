@@ -36,17 +36,20 @@ A full description of each of these components is provided below:
 - **Name:** CollidiumQuery
 - **What it does:** It stores user widget inputs as class variables, and constructs a sqlite query string from those attributes. The query string is designed to interact with the collidium_data table on the Collidium sqlite database, in order to pull before, during, and after collision counts for all collisions meeting the CollidiumQuery's attribute parameters at each building.
 
-- **Inputs:** Both the class constructor and individual set_attribute class methods take valid attribute input as arguments to set attributes. The only attribute without a set function is the query string, `qstring`. The following inputs/types/values are valid:
+- **Inputs:** Both the class constructor and individual `set_attribute` class methods take valid attribute input as arguments to set attributes. The only attribute without a set function is the query string, `qstring`. The following inputs/types/values are valid:
 
 | Argument Name | Description                                                       | Default Value | Valid Types                      | Valid Values                                                                                  |
 |---------------|-------------------------------------------------------------------|---------------|----------------------------------|-----------------------------------------------------------------------------------------------|
 | b_category    | Building category                                                 | 'All'         | list or single element as string | ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'] |
-| base_year     | Year of building completion date                                  | 1500          | int                              | (0, 1500]                                                                                     |
+| radius        | Distance between building and collision site                      | 1500          | int                              | (0, 1500]                                                                                     |
+| base_year     | Year of building completion date                                  | 2016          | int                              | [2014, 2017]                                                                                  |
 | duration      | Months to count collisions before and after building construction | 12            | int                              | (0, 12]                                                                                       |
+| c_severity    | Accident severity                                                 | 'All'         | list or single element as string | ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only']                       |
+| c_type        | Accident Type                                                     |  'All'        | list or single element as string | ['All', 'Vehicle Only', 'Bike/Pedestrian']                                                    |
 
-- **Outputs:**  A table with the same fields as input table, but filtered with the required specifications as selected with sliders/radio buttons
+- **Outputs:**  Class method `get_qstring` constructs and returns a sqlite query string designed to pull before, during, and after collision counts meeting the class attribute value parameters from the collidium_data table on the sqlite Collidium database.
 
-- **How it interacts with other components:** The table created in the build\_query function is used as input in the draw_markers component. Also, the options selected in build\_query are based on the options created in the Collidium.ipynb component.
+- **How it interacts with other components:** The `interactions_functionality.py` module creates a CollidiumQuery instance, and modifies the class attributes as the user makes interactive selections in the front-end Jupyter notebook. The `interactions_functionality.py` module requests the query string whenever it is needed to pull data results for a map update.
 
 ## draw_markers
 
