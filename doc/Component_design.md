@@ -31,12 +31,18 @@ A full description of each of these components is provided below:
 - **How it interacts with other components:** The table_builder module takes the collidium_data.csv output from the process_data module. The output file (Collidium.db) is called by the interact_functionality.py module to update the maps in the Collidium.ipynb notebook.
 
 
-## query_class TODO
+## query_class
 
-- **Name:** build_query
-- **What it does:** It filters a table using an SQL query based on the selectors from the sliders or radio buttons.
+- **Name:** CollidiumQuery
+- **What it does:** It stores user widget inputs as class variables, and constructs a sqlite query string from those attributes. The query string is designed to interact with the collidium_data table on the Collidium sqlite database, in order to pull before, during, and after collision counts for all collisions meeting the CollidiumQuery's attribute parameters at each building.
 
-- **Inputs:** The values from the sliders (integer and float based.), a table including Lat/Lon, building type, radius size, collision type, date
+- **Inputs:** Both the class constructor and individual set_attribute class methods take valid attribute input as arguments to set attributes. The only attribute without a set function is the query string, `qstring`. The following inputs/types/values are valid:
+
+| Argument Name | Description                                                       | Default Value | Valid Types                      | Valid Values                                                                                  |
+|---------------|-------------------------------------------------------------------|---------------|----------------------------------|-----------------------------------------------------------------------------------------------|
+| b_category    | Building category                                                 | 'All'         | list or single element as string | ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'] |
+| base_year     | Year of building completion date                                  | 1500          | int                              | (0, 1500]                                                                                     |
+| duration      | Months to count collisions before and after building construction | 12            | int                              | (0, 12]                                                                                       |
 
 - **Outputs:**  A table with the same fields as input table, but filtered with the required specifications as selected with sliders/radio buttons
 
