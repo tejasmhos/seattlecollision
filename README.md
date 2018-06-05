@@ -56,9 +56,23 @@ seattlecollision/
 
 ## Installation
 
-To operate the Collidium jupyter notebook, follow the steps below:
-1. Clone the respository onto your machine
-2. Navigate to the home project directory and run the commands to install the necessary package dependencies for running the notebook.
+There are two installation options outlined in the section below which include either activating the collidium.yml environment or peforming pip installations of the minimum requirements. After installation, the project can be executed by opening the Collidium.ipynb notebook. All tools and functionality is integrated into this notebook. No other application needs to be opened. 
+
+### Minimum Environment Activation
+This option will activate the collidium.yml environment which contains the minimal requirements needed to run Collidium.
+
+1. Clone the respository onto your machine and navigate to the main directory.
+2. Activate the collidium.yml environment by entering the command below into your command line.
+
+    ```conda env create -f collidium.yml```
+
+3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
+
+### Pip Installation of Requirements
+This option will pip install the requirements needed to run Collidium
+
+1. Clone the respository onto your machine and navigate to the main directory.
+2. Run the commands to install the necessary package dependencies for running the notebook.
 
     ``` pip install -r requirements.txt```
 
@@ -73,7 +87,6 @@ The package requirements for Collidium are summarized below:
     
 3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
 
-After installing the requirements, the project can be executed by opening the Collidium.ipynb notebook. All tools and functionality is integrated into this notebook. No other application needs to be opened. Alternatively, users can activate the collidium.yml environment available in the respository to run Collidium.
 
 ## Data Sources
  The data sourced for Collidium was taken from the [Seattle Open Data Portal](https://data.seattle.gov/). The tool uses processed versions of the [Building Permits](https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data) dataset and the [Collisions](https://data-seattlecitygis.opendata.arcgis.com/datasets/collisions/data) dataset. 
