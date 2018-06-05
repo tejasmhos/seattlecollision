@@ -65,7 +65,7 @@ A full description of each of these components is provided below:
     - before (int): Number of collisions that happend in period prior to construction
     - during (int): Number of collisions that happend in period during construction
     - after (int): Number of collisions that happend in period after construction.
-- 
+
 - **Outputs:** Three map objects place side by side. Each of the three maps will show a map of the city of Seattle with points plotted to show the location of buildings constructed in the selected time period. The size of the point will indicate the number of collisions that occured near the building. The color of the points corresponds to whether the number of collisions represents an increase from the before construction period (red) or a decrease relative to the before construction period (green) or same as the preconstruction period (blue). The left most map will show the number of collisions prior to construction, the middle map will show the number of collisions during construction and the right most map will show the number of collisions that occured after construction.
 
 - **How it interacts with other components:** This module interacts with many other modules as follows:
