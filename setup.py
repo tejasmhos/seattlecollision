@@ -4,7 +4,6 @@ This module contains the setup.py for running the Collidium tool
 from setuptools import setup, find_packages
 PACKAGES = find_packages()
 
-
 opts = dict(name='Collidium',
             maintainer='Alyssa Goodrich, Tejas Hosangadi, Ian Kirkman, Dan White',
             maintainer_email='dkwhite@uw.edu',
@@ -21,11 +20,6 @@ opts = dict(name='Collidium',
             packages=PACKAGES,
             package_data={'seattlecollision': ['data/*', 'tests/*']},
            )
-# setup(...,
-#       packages=['mypkg'],
-#       package_dir={'mypkg': 'src/mypkg'},
-#       package_data={'mypkg': ['data/*.dat']},
-#       )
 
 if __name__ == '__main__':
     setup(**opts)
