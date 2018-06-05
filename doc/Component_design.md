@@ -31,7 +31,7 @@ A full description of each of these components is provided below:
 - **How it interacts with other components:** The table_builder module takes the collidium_data.csv output from the process_data module. The output file (Collidium.db) is called by the interact_functionality.py module to update the maps in the Collidium.ipynb notebook.
 
 
-## query_class
+## CollidiumQuery (from query_class)
 
 - **Name:** CollidiumQuery
 - **What it does:** It stores user widget inputs as class variables, and constructs a sqlite query string from those attributes. The query string is designed to interact with the collidium_data table on the Collidium sqlite database, in order to pull before, during, and after collision counts for all collisions meeting the CollidiumQuery's attribute parameters at each building.
@@ -42,7 +42,7 @@ A full description of each of these components is provided below:
 |---------------|-------------------------------------------------------------------|---------------|----------------------------------|-----------------------------------------------------------------------------------------------|
 | b_category    | Building category                                                 | 'All'         | list or single element as string | ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'] |
 | radius        | Distance between building and collision site                      | 1500          | int                              | (0, 1500]                                                                                     |
-| base_year     | Year of building completion date                                  | 2016          | int                              | [2014, 2017]                                                                                  |
+| base_year     | Year of building completion date                                  | 2016          | int                              | 2014 - 2017                                                                                   |
 | duration      | Months to count collisions before and after building construction | 12            | int                              | (0, 12]                                                                                       |
 | c_severity    | Accident severity                                                 | 'All'         | list or single element as string | ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only']                       |
 | c_type        | Accident Type                                                     |  'All'        | list or single element as string | ['All', 'Vehicle Only', 'Bike/Pedestrian']                                                    |
