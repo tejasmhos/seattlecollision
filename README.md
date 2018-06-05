@@ -62,9 +62,18 @@ To operate the Collidium jupyter notebook, follow the steps below:
 
     ``` pip install -r requirements.txt```
 
+The package requirements for Collidium are summarized below:
+ * pandas
+ * numpy
+ * branca
+ * folium
+ * ipywidgets
+ * geopy
+ * ipython
+    
 3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
 
-After installing the requirements, the project can be executed by opening the Collidium.ipynb notebook. All tools and functionality is integrated into this notebook. No other application needs to be opened.
+After installing the requirements, the project can be executed by opening the Collidium.ipynb notebook. All tools and functionality is integrated into this notebook. No other application needs to be opened. Alternatively, users can activate the collidium.yml environment available in the respository to run Collidium.
 
 ## Data Sources
  The data sourced for Collidium was taken from the [Seattle Open Data Portal](https://data.seattle.gov/). The tool uses processed versions of the [Building Permits](https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data) dataset and the [Collisions](https://data-seattlecitygis.opendata.arcgis.com/datasets/collisions/data) dataset. 
