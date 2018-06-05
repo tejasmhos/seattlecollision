@@ -62,8 +62,8 @@ sys.path.append('seattlecollision/tests')
 
 import interactions_functionality as int_func #pylint: disable=wrong-import-position
 
-# DATA_DIRECTORY = "seattlecollision/data/Collidium" # Select if running on Travis, else comment out
-DATA_DIRECTORY = "../data/Collidium" # Select this if running on local machine, else comment out.
+DATA_DIRECTORY = "seattlecollision/data/Collidium" # Select if running on Travis, else comment out
+# DATA_DIRECTORY = "../data/Collidium" # Select this if running on local machine, else comment out.
 
 TEST_CONNECTION = int_func.generate_connection(DATA_DIRECTORY)
 TEST_DF = int_func.generate_table("select * from collidium_data",
