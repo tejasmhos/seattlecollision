@@ -15,13 +15,14 @@ The organization of our project is shown below:
 seattlecollision/
 	|- seattlecollision/
 		|- build_data_libraries/
+		        |- _build_database_script.py
 			|- process_data.py
 			|- table_builder.py
 		|- data/
 			|- raw_data/
 				|- raw_buildings_input.csv
 				|- raw_collision_input.csv
-			|- Collidium
+			|- Collidium.db
 			|- Test_Data_For_Draw_Markers.csv
 			|- buildings.csv
 			|- collidium_data.csv
