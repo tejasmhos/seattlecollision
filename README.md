@@ -66,7 +66,7 @@ This option will activate the collidium.yml environment which contains the minim
 
     ```conda env create -f collidium.yml```
 
-3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
+3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook and activate the Collidium environment. More instructions on activating the kernel for use on a Jupyter notebook is available [here](http://anbasile.github.io/programming/2017/06/25/jupyter-venv/)
 
 ### Pip Installation of Requirements
 This option will pip install the requirements needed to run Collidium
@@ -86,7 +86,6 @@ The package requirements for Collidium are summarized below:
  * ipython
     
 3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook
-
 
 ## Data Sources
  The data sourced for Collidium was taken from the [Seattle Open Data Portal](https://data.seattle.gov/). The tool uses processed versions of the [Building Permits](https://data.seattle.gov/Permitting/Building-Permits-Current/mags-97de/data) dataset and the [Collisions](https://data-seattlecitygis.opendata.arcgis.com/datasets/collisions/data) dataset. 
