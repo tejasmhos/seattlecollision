@@ -32,7 +32,7 @@ import branca
 import folium
 import numpy as np
 
-def create_map(data, period):
+def create_map(data, period, map_detail='Low',):
     """
     Creates a map and plots new buildings (location) and collisions (marker size)
 
@@ -48,9 +48,13 @@ def create_map(data, period):
         after (int): Number of collisions that happend in period after
         construction
 
-    period (string): String of value "before", "during" or "after"
+    period (str): String of value "before", "during" or "after"
         indicating whether function should plot volume of collisions before,
         during or after construction
+
+    map_detail(str): A string entry that allows the user to choose whether
+        they desire a low detail map, (better for zoomed out views) or a high
+        detail map, which is better for zoomed in views.
 
     Returns:
         Image of map with building locations plotted on it. The size of the
@@ -72,9 +76,12 @@ def create_map(data, period):
         jupyter. If this happens, a ValueError is raised.
 
     """
-
+    if map_detail == 'Low':
+        tile = 'Mapbox Bright'
+    else:
+        tile = 'OpenStreetMap'
     true_set = set(['b_lat', 'after', 'before', 'b_id', 'b_long', 'during'])
-    my_map = folium.Map(location=[47.6062, -122.3321], zoom_start=11, tiles='Mapbox Bright')
+    my_map = folium.Map(location=[47.6062, -122.3321], zoom_start=11, tiles=tile)
 
     if not data.empty:
 
@@ -85,7 +92,7 @@ def create_map(data, period):
             raise TypeError("Please select 800 or fewer observations from dataframe.")
 
         location = [np.mean(data['b_lat']), np.mean(data['b_long'])]
-        my_map = folium.Map(location=location, zoom_start=11, tiles='Mapbox Bright')
+        my_map = folium.Map(location=location, zoom_start=11, tiles=tile)
 
         for index, row in data.iterrows(): #pylint: disable=unused-variable
             if row[str(period)] < row['before']:
@@ -104,7 +111,7 @@ def create_map(data, period):
                 fill_color=fill_color).add_to(my_map)
     return my_map
 
-def place_maps(data):
+def place_maps(data, map_detail='Low'):
     """
     Draws three maps, plotting buiding permit locations with size
     representing number of collisions. Maps included show collisions,
@@ -113,14 +120,18 @@ def place_maps(data):
     Args:
     data: a dataframe that contains the following fields:
         b_id (int): buiding id number (key)
-        b_latitude (float): latitude of building
-        b_longitude (float): longitude of building
+        b_lat(float): latitude of building
+        b_long(float): longitude of building
         before (int): Number of collisions that happend in period prior
         to construction
         during (int): Number of collisions that happend in period during
         construction
         after (int): Number of collisions that happend in period after
         construction.
+
+    map_detail(str): A string entry that allows the user to choose whether
+        they desire a low detail map, (better for zoomed out views) or a high
+        detail map, which is better for zoomed in views.
 
     Returns:
         Three map images, with building permit locations identified. Maps
@@ -147,9 +158,9 @@ def place_maps(data):
                                     '</table></b></big>')
     map_grid.html.add_child(titles)
 
-    map_1 = create_map(data, "before")
-    map_2 = create_map(data, "during")
-    map_3 = create_map(data, "after")
+    map_1 = create_map(data, "before", map_detail)
+    map_2 = create_map(data, "during", map_detail)
+    map_3 = create_map(data, "after", map_detail)
 
     loc_1 = map_grid.add_subplot(1, 3, 1)
     loc_2 = map_grid.add_subplot(1, 3, 2)
