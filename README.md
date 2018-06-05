@@ -80,6 +80,8 @@ After installing the requirements, the project can be executed by opening the Co
  
  These processed datasets were aggregated into a database which provides the underlying data for the Collidium notebook. We calculate the distance between collisions and buildings and join collisions that occur within 1500 ft and 1 year of building permit. This database helps us reduce the complexity of our queries.
  
+ Our package ships with the sqlite database [Collidium](seattlecollision/data/Collidium) already constructed and ready to use out of the box. However, we have also included the build script for reproducibility and transparency in our processing assumptions. Our data building modules are all contained within the [build_data_libraries](seattlecollision/build_data_libraries/) subfolder, and the `_build_database_script.py` script executes all processes to rebuild the database from scratch. (Note/warning: reprocessing the data may take a couple of hours).
+ 
 ## Project History
 
 This project was inspired our team's observation that new building construction in Seattle is sometimes not accompanied by corresponding transportation infrastructure. We conducted this analysis to see if there is a visible difference in the number of collisions during and after construction, as compared to the period before construction. This project can be used by community activists, city planners and municipal politicians to help guide their decisions and agendas. 
