@@ -50,7 +50,8 @@ seattlecollision/
 	|- LICENSE
 	|- README.md
 	|- collidium_env.yml
-	|- requirements.txt		
+	|- requirements.txt	
+	|- setup.py
 ```
 
 ## Installation
