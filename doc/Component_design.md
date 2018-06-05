@@ -10,20 +10,21 @@ python package, and the processed data will be condtained in a database called C
 ## Components
 
 The components that we will be using for the project are listed below:
-## table_builder TODO
-- **Name:**
-- **What it does:**
-- **Inputs**
-- **Outputs**:
-- **How it interacts with other components:**
 
+## process_data
+- **Name:** process_data
+- **What it does:** Cleans and processes the raw data files. Runs geopy to link building permit and collision observations based on the their distance (within 1500 ft) and occurrence (within one year of start or end of building permit)
+- **Inputs** The inputs are the raw_building_input.csv file and the raw_collision_input.csv file which are downloaded directly from the Seattle Open Data portal
+- **Outputs**: The output is three .csv files which include the collisions.csv, buildings.csv, and collidium_data.csv. 
+- **How it interacts with other components:** The process_data module is the first module called when building the database. The collidium_data.csv output file is a direct input into the table_builder module.
 
-## process_data TODO
-- **Name:**
-- **What it does:**
-- **Inputs**
-- **Outputs**:
-- **How it interacts with other components:**
+## table_builder
+- **Name:** table_builder
+- **What it does:** It takes the processed collidium_data.csv file and creates the Collidium database, preserving the data types from each column. 
+- **Inputs** The input is the collidium_data.csv file produced by the process_data module.
+- **Outputs**: The Collidium.db database file containing the linked building permit and collision observations.
+- **How it interacts with other components:** The table_builder module takes the collidium_data.csv output from the process_data module. The output file (Collidium.db) is called by the interact_functionality.py module to update the maps in the Collidium.ipynb notebook.
+
 
 ## query_class TODO
 
