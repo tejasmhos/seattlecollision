@@ -91,6 +91,7 @@ Exceptions:
 import sqlite3
 import os
 import pandas as pd
+#pylint: disable=import-error
 import draw_markers
 from query_class import CollidiumQuery
 
