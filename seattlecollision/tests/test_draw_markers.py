@@ -32,6 +32,9 @@ import unittest
 import pandas as pd
 sys.path.append('seattlecollision/')
 sys.path.append('seattlecollision/data')
+
+
+
 import draw_markers as dm #pylint: disable=wrong-import-position
 
 

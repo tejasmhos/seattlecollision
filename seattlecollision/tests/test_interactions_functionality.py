@@ -278,7 +278,7 @@ class TestInteractPath(unittest.TestCase):
         '''Tests whether an invalid path raises a ValueError exception.'''
         self.assertRaises(ValueError, int_func.year_int_interact,
                           building_year=2015, collision_interval=12,
-                          data_directory='badPath')
+                          map_detail='High', data_directory='badPath')
 
     def test_c_s_invalid_path_error(self):
         '''Tests whether an invalid path raises a ValueError exception.'''
@@ -366,7 +366,7 @@ class TestInteractFunctions(unittest.TestCase):
     def test_c_severity_interact(self):
         """Tests whether collision_severity_interact function can be executed without error."""
         try:
-            int_func.collision_severity_interact(collision_severity="All",
+            int_func.collision_severity_interact(collision_severity="All", map_detail='High',
                                                  data_directory=DATA_DIRECTORY)
         except RuntimeError:
             self.fail("collision_severity_interact raised ExceptionType unexpectedly.")

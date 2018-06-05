@@ -38,14 +38,12 @@ A full description of each of these components is provided below:
 
 - **Inputs:** Both the class constructor and individual `set_attribute` class methods take valid attribute input as arguments to set attributes. The only attribute without a set function is the query string, `qstring`. The following inputs/types/values are valid:
 
-| Argument Name | Description                                                       | Default Value | Valid Types                      | Valid Values                                                                                  |
-|---------------|-------------------------------------------------------------------|---------------|----------------------------------|-----------------------------------------------------------------------------------------------|
-| b_category    | Building category                                                 | 'All'         | list or single element as string | ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'] |
-| radius        | Distance between building and collision site                      | 1500          | int                              | (0, 1500]                                                                                     |
-| base_year     | Year of building completion date                                  | 2016          | int                              | 2014 - 2017                                                                                   |
-| duration      | Months to count collisions before and after building construction | 12            | int                              | (0, 12]                                                                                       |
-| c_severity    | Accident severity                                                 | 'All'         | list or single element as string | ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only']                       |
-| c_type        | Accident Type                                                     |  'All'        | list or single element as string | ['All', 'Vehicle Only', 'Bike/Pedestrian']                                                    |
+  - b_category (list or string): Building category; list or single element as string from ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX'], default: 'All'
+  - radius (int): Distance between building and collision site; [0, 1500), default: 1500
+  - base_year (int): Year of building completion date; [2014, 2017], default: 2016
+  - duration (int): Months to count collisions before and after building construction; [0, 12], default: 12
+  - c_severity (list or string): Accident severity; list or single element as string from ['All', 'Fatality', 'Serious Injury', 'Injury', 'Property Damage Only'], default: 'All'
+  - c_type (list or string): Accident type; list or single element as string from ['All', 'Vehicle Only', 'Bike/Pedestrian'], default: 'All'
 
 - **Outputs:**  Class method `get_qstring` constructs and returns a sqlite query string designed to pull before, during, and after collision counts meeting the class attribute value parameters from the collidium_data table on the sqlite Collidium database.
 
@@ -65,6 +63,9 @@ A full description of each of these components is provided below:
     - before (int): Number of collisions that happend in period prior to construction
     - during (int): Number of collisions that happend in period during construction
     - after (int): Number of collisions that happend in period after construction.
+  
+  - map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
 
 - **Outputs:** Three map objects place side by side. Each of the three maps will show a map of the city of Seattle with points plotted to show the location of buildings constructed in the selected time period. The size of the point will indicate the number of collisions that occured near the building. The color of the points corresponds to whether the number of collisions represents an increase from the before construction period (red) or a decrease relative to the before construction period (green) or same as the preconstruction period (blue). The left most map will show the number of collisions prior to construction, the middle map will show the number of collisions during construction and the right most map will show the number of collisions that occured after construction.
 
@@ -79,18 +80,19 @@ A full description of each of these components is provided below:
   -  data_directory: Path to data directory where Collidium database is located. Collidium database includes data for collision and building pairs within 1500 foot radius of construction site. Fields include by construction begin date, construction end date, collision date, base year (year of construction completeion), indicator for whether the collision happened before, during or after construction, number of days the collision occured from construction window, collision type, building type, and collision severity.
   -  query_class: The query class is used within this module to develop a query that extracts the data from the Collium database that is used to populate the maps
   -  draw_markers: The draw markers module is used within this module to draw the maps based on the data that is extracted from the Collidium database using the query class. The maps are displayed in the Jupyter notebook environment.
-  -  User inputs: The *\_interact* functions each allow user to enter input to filter the data.   These options include: building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), and radius_from_building (int).
+  -  User inputs: The *\_interact* functions each allow user to enter input to filter the data.   These options include: building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), radius_from_building (int), and map_detail(str): Allows user to indicate if they prefer a map style with low detail or high detail.
 
 - **Outputs:** 
-- The *\_interact functions each output three map objects with building permits plotted on it, with volume of collisions codified by size and change in volume of collisions relative to preconstruction period codified by color. The three maps correspond to collision count before construction, during construction and after construction. These are intended to be run in a jupyter notebook environment. 
+  - The *\_interact functions each output three map objects with building permits plotted on it, with volume of collisions codified by size and change in volume of collisions relative to preconstruction period codified by color. The three maps correspond to collision count before construction, during construction and after construction. These are intended to be run in a jupyter notebook environment. 
 
-- **How it interacts with other components:** This component uses database created in by the process_data and table_builder modules. Recieves query created in the "build\_query" component and uses it to query database. Builds maps using the draw_markers component and visualizes maps in the UI component 
+  - **How it interacts with other components:** This component uses database created in by the process_data and table_builder modules. Recieves query created in the "build\_query" component and uses it to query database. Builds maps using the draw_markers component and visualizes maps in the UI component 
 
 ## Collidium.ipynb
 - **Name:** Collidium.ipynb
 - **What it does:** This component is used as our user interface. It imports the modules outlined above and collects input from the user using ipywidgets interact functionality. Once the user has completed their interaction it runs the modules and creates map visualizations. 
 
-- **Inputs:**  User inputs: Each use case allows users to select an option frm a drop down menu in the user interface. These include:  building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), and radius_from_building (int).
+- **Inputs:**  User inputs: Each use case allows users to select an option frm a drop down menu in the user interface. These include:  building_category (str), building_year (int), collision_interval (int) collision_severity (str), collision_type (str), radius_from_building (int) and map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail.
 
 - **Outputs:** Three maps are visualized for each use case
 

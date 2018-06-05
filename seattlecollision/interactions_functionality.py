@@ -189,7 +189,7 @@ def generate_table(query, data_directory="data/Collidium"):
         temp.columns = list(map(lambda x: x[0], sql_cursor.description))
     return temp
 
-def build_type_interact(building_category, data_directory="data/Collidium"):
+def build_type_interact(building_category, map_detail='Low', data_directory="data/Collidium"):
     """
     Queries database and returns maps based on data filtered by building type.
 
@@ -199,6 +199,9 @@ def build_type_interact(building_category, data_directory="data/Collidium"):
         COMMERCIAL, INDUSTRIAL, INSTITUTIONAL SINGLE FAMILY/DUPLEX, ALL)
 
     data_directory(str): Input with path to database location
+
+    map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
 
     Returns: Three maps showing building locations and number of collisions corresponding
         to each location before, during and after building construction
@@ -212,9 +215,10 @@ def build_type_interact(building_category, data_directory="data/Collidium"):
     query_builder.set_b_category(building_category)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    return draw_markers.place_maps(mapping_data)
+    return draw_markers.place_maps(mapping_data, map_detail=map_detail)
 
-def year_int_interact(building_year, collision_interval, data_directory="data/Collidium"):
+def year_int_interact(building_year, collision_interval, map_detail='Low',
+                      data_directory="data/Collidium"):
     """
     Queries database and returns maps based on data filtered by construction and colision timing.
 
@@ -225,6 +229,9 @@ def year_int_interact(building_year, collision_interval, data_directory="data/Co
         wishes to count collisions. Can take values 6-12.
 
     data_directory(str): Input with path to database location
+
+    map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
 
     Returns: Three maps showing building locations and number of collisions corresponding
         to each location before, during and after building construction
@@ -239,9 +246,10 @@ def year_int_interact(building_year, collision_interval, data_directory="data/Co
     query_builder.set_duration(collision_interval)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    return draw_markers.place_maps(mapping_data)
+    return draw_markers.place_maps(mapping_data, map_detail=map_detail)
 
-def collision_severity_interact(collision_severity, data_directory="data/Collidium"):
+def collision_severity_interact(collision_severity, map_detail='Low',
+                                data_directory="data/Collidium"):
     """
     Queries database and returns maps based on data filtered by collision severity
 
@@ -254,6 +262,9 @@ def collision_severity_interact(collision_severity, data_directory="data/Collidi
     Returns: Three maps showing building locations and number of collisions corresponding
         to each location before, during and after building construction
 
+    map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
+
     Raises:
         ValueError: If data_directory is not a valid path a value error is raised.
     """
@@ -263,9 +274,9 @@ def collision_severity_interact(collision_severity, data_directory="data/Collidi
     query_builder.set_c_severity(collision_severity)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    return draw_markers.place_maps(mapping_data)
+    return draw_markers.place_maps(mapping_data, map_detail=map_detail)
 
-def collision_type_interact(collision_type, data_directory="data/Collidium"):
+def collision_type_interact(collision_type, map_detail='Low', data_directory="data/Collidium"):
     """
     Queries database and returns maps based on data filtered by collision type
 
@@ -274,6 +285,9 @@ def collision_type_interact(collision_type, data_directory="data/Collidium"):
         include Vehicle only and Bike/Pedestrian
 
     data_directory(str): Input with path to database location
+
+    map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
 
     Returns: Three maps showing building locations and number of collisions corresponding
         to each location before, during and after building construction
@@ -287,9 +301,9 @@ def collision_type_interact(collision_type, data_directory="data/Collidium"):
     query_builder.set_c_type(collision_type)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    return draw_markers.place_maps(mapping_data)
+    return draw_markers.place_maps(mapping_data, map_detail=map_detail)
 
-def radius_interact(radius_from_building, data_directory="data/Collidium"):
+def radius_interact(radius_from_building, map_detail='Low', data_directory="data/Collidium"):
     """
     Queries database and returns maps based on proximity of collisions to building site
 
@@ -299,6 +313,9 @@ def radius_interact(radius_from_building, data_directory="data/Collidium"):
         radius_from_building number less than this input will be included in collision counts.
 
     data_directory(str): Input with path to database location
+
+    map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
 
     Returns: Three maps showing building locations and number of collisions corresponding
         to each location before, during and after building construction
@@ -312,11 +329,11 @@ def radius_interact(radius_from_building, data_directory="data/Collidium"):
     query_builder.set_radius(radius_from_building)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    return draw_markers.place_maps(mapping_data)
+    return draw_markers.place_maps(mapping_data, map_detail=map_detail)
 
 def all_factor_interact(building_category, building_year, collision_interval, #pylint: disable=too-many-arguments
                         collision_severity, collision_type, radius_from_building,
-                        data_directory="data/Collidium"):
+                        map_detail='Low', data_directory="data/Collidium"):
     """
     Queries database and returns maps based on proximity of collisions to building site
 
@@ -340,6 +357,9 @@ def all_factor_interact(building_category, building_year, collision_interval, #p
         in order to be included in the building's collision count. All buildings with a
         radius_from_building number less than this input will be included in collision counts.
 
+    map_detail(str): Allows user to indicate if they prefer a map style with low detail
+        or high detail
+
     data_directory(str): Input with path to database location
 
     Returns: Three maps showing building locations and number of collisions corresponding
@@ -359,4 +379,4 @@ def all_factor_interact(building_category, building_year, collision_interval, #p
     query_builder.set_radius(radius_from_building)
     whole_query = query_builder.get_qstring()
     mapping_data = generate_table(whole_query, data_directory)
-    return draw_markers.place_maps(mapping_data)
+    return draw_markers.place_maps(mapping_data, map_detail=map_detail)

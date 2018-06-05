@@ -15,13 +15,14 @@ The organization of our project is shown below:
 seattlecollision/
 	|- seattlecollision/
 		|- build_data_libraries/
+		        |- _build_database_script.py
 			|- process_data.py
 			|- table_builder.py
 		|- data/
 			|- raw_data/
 				|- raw_buildings_input.csv
 				|- raw_collision_input.csv
-			|- Collidium
+			|- Collidium.db
 			|- Test_Data_For_Draw_Markers.csv
 			|- buildings.csv
 			|- collidium_data.csv
@@ -49,7 +50,8 @@ seattlecollision/
 	|- LICENSE
 	|- README.md
 	|- collidium_env.yml
-	|- requirements.txt		
+	|- requirements.txt	
+	|- setup.py
 ```
 
 ## Installation
@@ -69,12 +71,19 @@ After installing the requirements, the project can be executed by opening the Co
  
  These processed datasets were aggregated into a database which provides the underlying data for the Collidium notebook. We calculate the distance between collisions and buildings and join collisions that occur within 1500 ft and 1 year of building permit. This database helps us reduce the complexity of our queries.
  
- ## Project History
- TO DO
+## Project History
+
+This project was inspired our team's observation that new building construction in Seattle is sometimes not accompanied by corresponding transportation infrastructure. We conducted this analysis to see if there is a visible difference in the number of collisions during and after construction, as compared to the period before construction. This project can be used by community activists, city planners and municipal politicians to help guide their decisions and agendas. 
+
+## Limitations
+
+This project has several limitations. These include: 
+	- Some functionality can only be run on Python 3.5 or later
+	- When we processed the data we normalized the construction period so that we could compare collisions during construction on an apples to apples basis to the before construction period and after construction period. When we normalized the data we did not take seasonality into account. This may result in a bias.
+	- This project does not include statistical analysis. Although some differences in collisions are detected, we did not identify whether the differences arestatistically significant.
+	- Users are required to use Jupyter notebook to run this project. Some of our targeted user group may not have access or knowledge of how to use Jupyter notebooks. 
  
- 
- 
- ## Acknowledgements
+## Acknowledgements
  
  Collidium was developed for a class project in Spring 2018 for the Data 515A - Software Engineering for Data Scientists course at University of Washington. Many thanks to instructors David A. C. Beck and Joseph L. Hellerstein of the University of Washington eScience Institute for their insight and guidance throughout project development.
 
