@@ -69,7 +69,7 @@ This option will activate the collidium.yml environment which contains the minim
 3. Launch [Collidium](seattlecollision/Collidium.ipynb) in a Jupyter notebook and activate the Collidium environment. More instructions on activating the kernel for use on a Jupyter notebook is available [here](http://anbasile.github.io/programming/2017/06/25/jupyter-venv/)
 
 ### Pip Installation of Requirements
-This option will pip install the requirements needed to run Collidium
+Alternatively, if there are issues running the minimum environment, users can pip install the requirements needed to run Collidium on their local environment.
 
 1. Clone the respository onto your machine and navigate to the main directory.
 2. Run the commands to install the necessary package dependencies for running the notebook.
