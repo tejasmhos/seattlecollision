@@ -78,8 +78,6 @@ Exceptions:
 
     ValueError: Raised if a user enters an invalid data directory as input
 
-    IndexError: Raised if user enters invalid columns in the generate_categories function
-
 """
 import sqlite3
 import os
