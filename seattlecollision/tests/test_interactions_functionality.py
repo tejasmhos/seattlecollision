@@ -14,12 +14,6 @@ Classes:
         that the function will raise a ValueError if it is connected to an invalid
         directory.
 
-    TestGenerateCategories: This class conducts three tests on the generate_categories
-        function. The first test, validates that an IndexError is raised if the user
-        enters invalid input. The second validates that the output generated is correct,
-        and the third validates that the function will raise a ValueError if it is
-        connected to an invalid directory.
-
     TestGenerateTable: This class conducts three tests on the generate_table function.
         The first test alidates that the function assigns column names to the table.
         The next test ensures function returns output with at least 100 rows and the
@@ -118,55 +112,6 @@ class TestGenerateConnections(unittest.TestCase):
 
 
 SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateConnections)
-_ = unittest.TextTestRunner().run(SUITE)
-
-class TestGenerateCategories(unittest.TestCase):
-    '''Conducts test on the performance of the generate_categories function.
-
-    This class tests the generate_categories function. It conducts three tests, for
-    the pupose of validating the functionality of the function. Each test is contained
-    in a function as follows:
-
-    Functions:
-        test_cols_needed: Tests whether function recieved valid input
-            Parameters: self
-            Returns: Pass if inputs are same as prescribed column names, and fail otherwise.
-
-        test_output: Ensures function expected output.
-            Parameters: self
-            Returns: Pass if expected output is recieved, and fail otherwise.
-
-        test_invalid_path_error: Tests whether an invalid path raises a ValueError exception.
-            Parameters: self
-            Returns: Pass if invalid path raises a ValueError, and fail otherwise.
-
-    Returns: A human readable string that provides a summary of results of the five tests
-        conducted within this class.
-    '''
-
-    def test_cols_needed(self):
-        """Tests that invalid input raises an IndexError"""
-        bad_cols_needed = ["bad_category", "base_year", "c_severity", "c_type"]
-        self.assertRaises(IndexError, int_func.generate_categories, bad_cols_needed,
-                          data_directory=DATA_DIRECTORY)
-
-    def test_output(self):
-        '''Ensures function outputs the correct lists.'''
-        cols_needed = ["b_category", "base_year", "c_severity", "c_type"]
-        test_categories = int_func.generate_categories(cols_needed,
-                                                       data_directory=DATA_DIRECTORY)
-        true_output = (['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL', 'INSTITUTIONAL',
-                        'SINGLE FAMILY / DUPLEX'], ['All', 2016, 2015, 2017, 2014, 2013],
-                       ['All', 'Property Damage Only', 'Injury', 'Serious Injury', 'Fatality'],
-                       ['All', 'Vehicle Only', 'Bike/Pedestrian'])
-        self.assertTrue(test_categories == true_output)
-
-    def test_invalid_path_error(self):
-        '''Tests whether an invalid path raises a ValueError exception.'''
-        self.assertRaises(ValueError, int_func.generate_categories, 'badPath')
-
-
-SUITE = unittest.TestLoader().loadTestsFromTestCase(TestGenerateCategories)
 _ = unittest.TextTestRunner().run(SUITE)
 
 
