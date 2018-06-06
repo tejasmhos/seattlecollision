@@ -101,10 +101,11 @@ This project was inspired our team's observation that new building construction 
 ## Limitations
 
 This project has several limitations. These include: 
-	- Some functionality can only be run on Python 3.5 or later
-	- When we processed the data we normalized the construction period so that we could compare collisions during construction on an apples to apples basis to the before construction period and after construction period. When we normalized the data we did not take seasonality into account. This may result in a bias.
-	- This project does not include statistical analysis. Although some differences in collisions are detected, we did not identify whether the differences arestatistically significant.
-	- Users are required to use Jupyter notebook to run this project. Some of our targeted user group may not have access or knowledge of how to use Jupyter notebooks. 
+
+ - Some functionality can only be run on Python 3.5 or later
+ - When we processed the data we normalized the construction period so that we could compare collisions during construction on an apples to apples basis to the before construction period and after construction period. When we normalized the data we did not take seasonality into account. This may result in a bias.
+ - This project does not include statistical analysis. Although some differences in collisions are detected, we did not identify whether the differences arestatistically significant.
+ - Users are required to use Jupyter notebook to run this project. Some of our targeted user group may not have access or knowledge of how to use Jupyter notebooks. 
  
 ## Acknowledgements
  
