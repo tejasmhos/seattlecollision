@@ -32,6 +32,15 @@ import branca
 import folium
 import numpy as np
 
+ZOOM_START = 11
+RED = '#ff6666'
+GREEN = '#53c68c'
+BLUE = '#809fff'
+HIGH_DETAIL_TILE = 'OpenStreetMap'
+LOW_DETAIL_TILE = 'Mapbox Bright'
+SEATTLE_COORDS = [47.6062, -122.3321]
+RADIUS_ADJUSTMENT = 20
+
 def create_map(data, period, map_detail='Low',):
     """
     Creates a map and plots new buildings (location) and collisions (marker size)
@@ -77,11 +86,11 @@ def create_map(data, period, map_detail='Low',):
 
     """
     if map_detail == 'Low':
-        tile = 'Mapbox Bright'
+        tile = LOW_DETAIL_TILE
     else:
-        tile = 'OpenStreetMap'
+        tile = HIGH_DETAIL_TILE
     true_set = set(['b_lat', 'after', 'before', 'b_id', 'b_long', 'during'])
-    my_map = folium.Map(location=[47.6062, -122.3321], zoom_start=11, tiles=tile)
+    my_map = folium.Map(location=SEATTLE_COORDS, zoom_start=ZOOM_START, tiles=tile)
 
     if not data.empty:
 
@@ -92,18 +101,18 @@ def create_map(data, period, map_detail='Low',):
             raise TypeError("Please select 800 or fewer observations from dataframe.")
 
         location = [np.mean(data['b_lat']), np.mean(data['b_long'])]
-        my_map = folium.Map(location=location, zoom_start=11, tiles=tile)
+        my_map = folium.Map(location=location, zoom_start=ZOOM_START, tiles=tile)
 
         for index, row in data.iterrows(): #pylint: disable=unused-variable
             if row[str(period)] < row['before']:
-                fill_color = '#53c68c'
+                fill_color = GREEN
             elif row[str(period)] > row['before']:
-                fill_color = '#ff6666'
+                fill_color = RED
             else:
-                fill_color = '#809fff'
+                fill_color = BLUE
             folium.CircleMarker(
                 location=[row['b_lat'], row['b_long']],
-                radius=row[str(period)]/20,
+                radius=row[str(period)]/RADIUS_ADJUSTMENT,
                 fill=True,
                 popup=str('Number of collisions: '+ str(round(row[str(period)], 0))),
                 color=fill_color,
