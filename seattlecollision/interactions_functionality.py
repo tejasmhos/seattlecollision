@@ -16,13 +16,6 @@ Functions:
         returns a cursor object that can be used to query the database. It is used
         within each of the other functions in this module.
 
-    generate_categories: This function queries the database and generates a list of all
-        the categories that a user can select from when developing thier query. The
-        function takes and input of the data_directory, which is the location of the
-        datebase, as well as the cols_needed, which are a list of four columns for which
-        the user desires a list of options to select from. The function returns four
-        lists, one for each column in the "cols_needed input."
-
     generate_table: This function takes input of a database directory and a query. It
         then querys the database, using the query string input and creates a pandas
         dataframe out of the query output. The function also creates field names for
@@ -85,8 +78,6 @@ Exceptions:
 
     ValueError: Raised if a user enters an invalid data directory as input
 
-    IndexError: Raised if user enters invalid columns in the generate_categories function
-
 """
 import sqlite3
 import os
@@ -94,6 +85,14 @@ import pandas as pd
 #pylint: disable=import-error
 import draw_markers
 from query_class import CollidiumQuery
+
+# Set constants for display options
+BUILDING_CATEGORIES = ['All', 'COMMERCIAL', 'MULTIFAMILY', 'INDUSTRIAL',
+                       'INSTITUTIONAL', 'SINGLE FAMILY / DUPLEX']
+BUILDING_YEARS = list(range(2014, 2018))
+COLLISION_SEVERITY = ['All', 'Property Damage Only', 'Injury', 'Serious Injury', 'Fatality']
+COLLISION_TYPE = ['All', 'Vehicle Only', 'Bike/Pedestrian']
+TILES = ['Low', 'High']
 
 def generate_connection(data_directory):
     """
@@ -114,52 +113,6 @@ def generate_connection(data_directory):
     connection = sqlite3.connect(data_directory)
     sql_cursor = connection.cursor()
     return sql_cursor
-
-
-
-def generate_categories(cols_needed, data_directory="data/Collidium"):
-    """
-    This function generates lists of unique entries in each of four categories.
-
-    These lists are later used to populate the
-    dropdown menu in the map interaction in the Jupyter Notebook.
-
-    Args:
-    cols_needed(list): List of four entries including ('b_category', 'base_year',
-        'c_severity', 'c_type'), where b_category is building category (e.g.,
-        multifamily, commercial), base_year is the year construction was completed
-        c_severity is collision severity (e.g., fatality, injury) and c_type is
-        collision type (e.g., vehicle only or bike/pedestrian).
-
-        data_directory(str): Input with path to database location
-
-    Returns: Four lists, one for each cols_needed entry
-
-    Raises:
-        ValueError: If data_directory is not a valid path a value error is raised.
-
-        IndexError: If cols_needed input does not contain the list with the items
-            ['b_category', 'base_year', 'c_severity', 'c_type'].
-
-    """
-    if not os.path.exists(str(data_directory)):
-        raise ValueError(str((data_directory) +" is not a valid path"))
-    true_set = set(['b_category', 'base_year', 'c_severity', 'c_type'])
-    if not set(list(cols_needed)) == true_set:
-        raise IndexError("cols_needed must only contain the fields:", true_set)
-    categories = list()
-    i = 0
-    for col in cols_needed:
-        query_string = str("select distinct " + col + " from collidium_data")
-        sql_cursor = generate_connection(data_directory)
-        sql_cursor.execute(query_string)
-        temp = pd.DataFrame(sql_cursor.fetchall())
-        temp = temp.values.tolist()
-        temp = [val for sublist in temp for val in sublist]
-        temp.insert(0, 'All')
-        categories.append(temp)
-        i += 1
-    return categories[0], categories[1], categories[2], categories[3]
 
 def generate_table(query, data_directory="data/Collidium"):
     """
